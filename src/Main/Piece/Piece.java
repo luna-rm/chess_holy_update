@@ -56,11 +56,29 @@ public class Piece {
     public void updatePosition() {
         x = getX(col);
         y = getY(row);
-        preCol = getCol(x);
-        preRow = getRow(y);
+        preCol = col;
+        preRow = row;
     }
 
     public void draw(Graphics2D g2) {
         g2.drawImage(image, x, y, Board.SQUARE_SIZE, Board.SPRITE_SIZE, null);
+    }
+
+    public boolean canMove(int targetCol, int targetRow) {
+        return false;
+    }
+
+    public boolean isWithinBoard(int targetCol, int targetRow) {
+        if(targetCol >= 0 && targetCol <= 7 && targetRow >= 0 && targetRow <= 8) {
+            return true;
+        }
+        return false;
+    }
+
+    public void resetPosition() {
+        col = preCol;
+        row = preRow;
+        x = getX(col);
+        y = getY(row);
     }
 }

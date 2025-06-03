@@ -16,7 +16,7 @@ public class Board {
     public static final int SPRITE_SIZE = SQUARE_SIZE * 2;
     public static final int HALF_SQUARE_SIZE = SQUARE_SIZE / 2;
 
-    public static BufferedImage black, white;
+    public static BufferedImage black, white, canMove;
 
     static int scale = 3;
 
@@ -27,8 +27,9 @@ public class Board {
 
         black = ImageIO.read(Objects.requireNonNull(Board.class.getResourceAsStream("./imgs/b_square.png")));
         white = ImageIO.read(Objects.requireNonNull(Board.class.getResourceAsStream("./imgs/w_square.png")));
+        canMove = ImageIO.read(Objects.requireNonNull(Board.class.getResourceAsStream("./imgs/canMove_square.png")));
 
-        BufferedImage img = white;
+        BufferedImage img = black;
 
         if(GamePanel.currentColor == GamePanel.WHITE){
             g2.setColor(new Color(129, 137, 179));
@@ -44,12 +45,18 @@ public class Board {
                 img = white;
             }
             for(int col = 0; col < MAX_COL; col++) {
-                g2.drawImage(img, col * SQUARE_SIZE + SQUARE_SIZE, row * SQUARE_SIZE + 2*SQUARE_SIZE, null);
                 if(img == white){
                     img = black;
                 } else {
                     img = white;
                 }
+                if(GamePanel.activePiece != null){
+                    if(GamePanel.activePiece.canMove(col, row)){
+                        g2.drawImage(canMove, col * SQUARE_SIZE + SQUARE_SIZE, row * SQUARE_SIZE + 2*SQUARE_SIZE, null);
+                        continue;
+                    }
+                }
+                g2.drawImage(img, col * SQUARE_SIZE + SQUARE_SIZE, row * SQUARE_SIZE + 2*SQUARE_SIZE, null);
             }
         }
 

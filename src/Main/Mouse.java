@@ -1,5 +1,6 @@
 package Main;
 
+import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -7,15 +8,21 @@ public class Mouse extends MouseAdapter {
 
     public int x, y;
     public boolean pressed;
+    public boolean right;
 
     @Override
     public void mousePressed(MouseEvent e) {
-        pressed = true;
+        if(SwingUtilities.isLeftMouseButton(e)){
+            pressed = true;
+        } else {
+            right = true;
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         pressed = false;
+        right = false;
     }
 
     @Override

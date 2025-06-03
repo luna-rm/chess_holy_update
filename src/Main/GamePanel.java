@@ -27,13 +27,16 @@ public class GamePanel extends JPanel implements Runnable {
 
     public static ArrayList<Piece> pieces = new ArrayList<>();
     public static ArrayList<Piece> simPieces = new ArrayList<>();
-    Piece activePiece;
+    public static Piece activePiece;
 
     public static final int WHITE = 0;
     public static final int BLACK = 1;
 
     public static int currentColor = WHITE;
     int not_released = 1;
+
+    boolean canMove;
+    boolean validSquare;
 
     private void update(){
         if(mouse.pressed && not_released == 1){
@@ -48,18 +51,28 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                 }
             } else {
-                activePiece.col = (mouse.x/3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
-                activePiece.row = (mouse.y/3 - Board.SQUARE_SIZE*2) / (Board.SQUARE_SIZE);
-                activePiece.updatePosition();
-                activePiece = null;
-                Collections.sort(pieces, new PieceComparator());
+                if(validSquare) {
+                    activePiece.col = (mouse.x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
+                    activePiece.row = (mouse.y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
+                    activePiece.updatePosition();
+                    activePiece = null;
+                    Collections.sort(pieces, new PieceComparator());
 
-                if(currentColor == WHITE){
-                    currentColor = BLACK;
-                } else {
-                    currentColor = WHITE;
+                    if (currentColor == WHITE) {
+                        currentColor = BLACK;
+                    } else {
+                        currentColor = WHITE;
+                    }
                 }
             }
+        }
+
+        if(mouse.right){
+            not_released = 1;
+            if(activePiece != null) {
+                activePiece.resetPosition();
+            }
+            activePiece = null;
         }
 
         if(!mouse.pressed && not_released == 0) {
@@ -71,9 +84,20 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    private void simulate(){
+    private void simulate() {
+        System.out.println(validSquare);
         activePiece.x = (mouse.x/3) / (Board.SQUARE_SIZE) * (Board.SQUARE_SIZE);
         activePiece.y = (mouse.y/3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE) * (Board.SQUARE_SIZE);
+        activePiece.col = (mouse.x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
+        activePiece.row = (mouse.y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
+
+        if(activePiece.canMove(activePiece.col, activePiece.row)){
+            canMove = true;
+            validSquare = true;
+        } else {
+            canMove = false;
+            validSquare = false;
+        }
     }
 
     public void lunchGame() {
