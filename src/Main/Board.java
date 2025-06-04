@@ -52,13 +52,59 @@ public class Board {
                     img = white;
                 }
                 if(GamePanel.activePiece != null){
-                    if(GamePanel.activePiece.canMove(col, row) || (GamePanel.activePiece.preRow == row && GamePanel.activePiece.preCol == col)){
-                        if(img == white){
-                            g2.drawImage(wc, col * SQUARE_SIZE + SQUARE_SIZE, row * SQUARE_SIZE + 2*SQUARE_SIZE, null);
-                        } else {
-                            g2.drawImage(bc, col * SQUARE_SIZE + SQUARE_SIZE, row * SQUARE_SIZE + 2*SQUARE_SIZE, null);
+                    if(GamePanel.moveChosen == 0){
+                        if(GamePanel.activePiece.preRow == row && GamePanel.activePiece.preCol == col){
+                            if(img == white){
+                                g2.drawImage(wc, col * SQUARE_SIZE + SQUARE_SIZE, row * SQUARE_SIZE + 2*SQUARE_SIZE, null);
+                            } else {
+                                g2.drawImage(bc, col * SQUARE_SIZE + SQUARE_SIZE, row * SQUARE_SIZE + 2*SQUARE_SIZE, null);
+                            }
+                            continue;
                         }
-                        continue;
+                    }
+
+                    if(GamePanel.moveChosen == 1){
+                        if(GamePanel.activePiece.canMove1(col, row) || (GamePanel.activePiece.preRow == row && GamePanel.activePiece.preCol == col)){
+                            if(img == white){
+                                g2.drawImage(wc, col * SQUARE_SIZE + SQUARE_SIZE, row * SQUARE_SIZE + 2*SQUARE_SIZE, null);
+                            } else {
+                                g2.drawImage(bc, col * SQUARE_SIZE + SQUARE_SIZE, row * SQUARE_SIZE + 2*SQUARE_SIZE, null);
+                            }
+                            continue;
+                        }
+                    }
+
+                    if(GamePanel.moveChosen == 2){
+                        if(GamePanel.activePiece.canMove2(col, row) || (GamePanel.activePiece.preRow == row && GamePanel.activePiece.preCol == col)){
+                            if(img == white){
+                                g2.drawImage(wc, col * SQUARE_SIZE + SQUARE_SIZE, row * SQUARE_SIZE + 2*SQUARE_SIZE, null);
+                            } else {
+                                g2.drawImage(bc, col * SQUARE_SIZE + SQUARE_SIZE, row * SQUARE_SIZE + 2*SQUARE_SIZE, null);
+                            }
+                            continue;
+                        }
+                    }
+
+                    if(GamePanel.moveChosen == 3){
+                        if(GamePanel.activePiece.canMove3(col, row) || (GamePanel.activePiece.preRow == row && GamePanel.activePiece.preCol == col)){
+                            if(img == white){
+                                g2.drawImage(wc, col * SQUARE_SIZE + SQUARE_SIZE, row * SQUARE_SIZE + 2*SQUARE_SIZE, null);
+                            } else {
+                                g2.drawImage(bc, col * SQUARE_SIZE + SQUARE_SIZE, row * SQUARE_SIZE + 2*SQUARE_SIZE, null);
+                            }
+                            continue;
+                        }
+                    }
+
+                    if(GamePanel.moveChosen == 4){
+                        if(GamePanel.activePiece.canMove4(col, row) || (GamePanel.activePiece.preRow == row && GamePanel.activePiece.preCol == col)){
+                            if(img == white){
+                                g2.drawImage(wc, col * SQUARE_SIZE + SQUARE_SIZE, row * SQUARE_SIZE + 2*SQUARE_SIZE, null);
+                            } else {
+                                g2.drawImage(bc, col * SQUARE_SIZE + SQUARE_SIZE, row * SQUARE_SIZE + 2*SQUARE_SIZE, null);
+                            }
+                            continue;
+                        }
                     }
                 }
                 g2.drawImage(img, col * SQUARE_SIZE + SQUARE_SIZE, row * SQUARE_SIZE + 2*SQUARE_SIZE, null);

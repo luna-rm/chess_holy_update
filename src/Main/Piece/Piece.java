@@ -86,6 +86,78 @@ public class Piece {
         return false;
     }
 
+    public void move1(int x, int y){
+        this.col = (x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
+        this.row = (y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
+        if(this.hittingPiece != null) {
+            GamePanel.pieces.remove(this.hittingPiece.getIndex());
+            GamePanel.slay[GamePanel.currentColor]++;
+        }
+        GamePanel.moveChosen = 0;
+        this.updatePosition();
+        GamePanel.activePiece = null;
+
+        if (GamePanel.currentColor == GamePanel.WHITE) {
+            GamePanel.currentColor = GamePanel.BLACK;
+        } else {
+            GamePanel.currentColor = GamePanel.WHITE;
+        }
+    }
+
+    public void move2(int x, int y){
+        this.col = (x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
+        this.row = (y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
+        if(this.hittingPiece != null) {
+            GamePanel.pieces.remove(this.hittingPiece.getIndex());
+            GamePanel.slay[GamePanel.currentColor]++;
+        }
+        GamePanel.moveChosen = 0;
+        this.updatePosition();
+        GamePanel.activePiece = null;
+
+        if (GamePanel.currentColor == GamePanel.WHITE) {
+            GamePanel.currentColor = GamePanel.BLACK;
+        } else {
+            GamePanel.currentColor = GamePanel.WHITE;
+        }
+    }
+
+    public void move3(int x, int y){
+        this.col = (x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
+        this.row = (y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
+        if(this.hittingPiece != null) {
+            GamePanel.pieces.remove(this.hittingPiece.getIndex());
+            GamePanel.slay[GamePanel.currentColor]++;
+        }
+        GamePanel.moveChosen = 0;
+        this.updatePosition();
+        GamePanel.activePiece = null;
+
+        if (GamePanel.currentColor == GamePanel.WHITE) {
+            GamePanel.currentColor = GamePanel.BLACK;
+        } else {
+            GamePanel.currentColor = GamePanel.WHITE;
+        }
+    }
+
+    public void move4(int x, int y){
+        this.col = (x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
+        this.row = (y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
+        if(this.hittingPiece != null) {
+            GamePanel.pieces.remove(this.hittingPiece.getIndex());
+            GamePanel.slay[GamePanel.currentColor]++;
+        }
+        GamePanel.moveChosen = 0;
+        this.updatePosition();
+        GamePanel.activePiece = null;
+
+        if (GamePanel.currentColor == GamePanel.WHITE) {
+            GamePanel.currentColor = GamePanel.BLACK;
+        } else {
+            GamePanel.currentColor = GamePanel.WHITE;
+        }
+    }
+
     public boolean isWithinBoard(int targetCol, int targetRow) {
         if(targetCol >= 0 && targetCol <= 7 && targetRow >= 0 && targetRow <= 8) {
             return true;

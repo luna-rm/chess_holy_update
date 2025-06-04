@@ -40,9 +40,9 @@ public class GamePanel extends JPanel implements Runnable {
     boolean canMove;
     boolean validSquare;
 
-    int[] slay = new int[]{0, 0};
-    int[] kin = new int[]{0, 0};
-    int[] divinity = new int[]{0, 0};
+    public static int[] slay = new int[]{0, 0};
+    public static int[] kin = new int[]{0, 0};
+    public static int[] divinity = new int[]{5, 5};
 
     private void update(){
         System.out.println(moveChosen);
@@ -57,22 +57,18 @@ public class GamePanel extends JPanel implements Runnable {
                         activePiece = p;
                     }
                 }
-            } else /*if(moveChosen != 0)*/{
+            } else if(moveChosen != 0){
                 if(validSquare) {
-                    activePiece.col = (mouse.x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
-                    activePiece.row = (mouse.y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
-                    if(activePiece.hittingPiece != null) {
-                        pieces.remove(activePiece.hittingPiece.getIndex());
+                    if(moveChosen == 1){
+                        activePiece.move1(mouse.x, mouse.y);
+                    } else if(moveChosen == 2){
+                        activePiece.move2(mouse.x, mouse.y);
+                    }else if(moveChosen == 3){
+                        activePiece.move3(mouse.x, mouse.y);
+                    }else if(moveChosen == 4){
+                        activePiece.move4(mouse.x, mouse.y);
                     }
-                    activePiece.updatePosition();
-                    activePiece = null;
                     Collections.sort(pieces, new PieceComparator());
-
-                    if (currentColor == WHITE) {
-                        currentColor = BLACK;
-                    } else {
-                        currentColor = WHITE;
-                    }
                 }
             }
         }
@@ -101,8 +97,16 @@ public class GamePanel extends JPanel implements Runnable {
             activePiece.col = (mouse.x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
             activePiece.row = (mouse.y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
 
-
-            if(activePiece.canMove1(activePiece.col, activePiece.row)){
+            if(activePiece.canMove1(activePiece.col, activePiece.row) && moveChosen == 1){
+                canMove = true;
+                validSquare = true;
+            } else if (activePiece.canMove2(activePiece.col, activePiece.row) && moveChosen == 2){
+                canMove = true;
+                validSquare = true;
+            } else if (activePiece.canMove3(activePiece.col, activePiece.row) && moveChosen == 3){
+                canMove = true;
+                validSquare = true;
+            } else if (activePiece.canMove4(activePiece.col, activePiece.row) && moveChosen == 4){
                 canMove = true;
                 validSquare = true;
             } else {
