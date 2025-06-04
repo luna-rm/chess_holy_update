@@ -12,4 +12,16 @@ public class Tower extends Piece {
             image = getImage("../imgs/b_tower");
         }
     }
+
+    @Override
+    public boolean canMove(int targetCol, int targetRow) {
+        if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
+            if (targetCol == preCol || targetRow == preRow) {
+                if (isValidSquare(targetCol, targetRow) && !pieceIsOnStraightLine(targetCol, targetRow)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

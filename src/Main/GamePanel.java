@@ -4,6 +4,7 @@ import Main.Piece.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,11 +35,13 @@ public class GamePanel extends JPanel implements Runnable {
 
     public static int currentColor = WHITE;
     int not_released = 1;
+    public static int moveChosen = 0;
 
     boolean canMove;
     boolean validSquare;
 
     private void update(){
+        System.out.println(moveChosen);
         if(mouse.pressed && not_released == 1){
             for(Piece p : pieces){
                 System.out.println(p.row + " " + p.col);
@@ -50,10 +53,13 @@ public class GamePanel extends JPanel implements Runnable {
                         activePiece = p;
                     }
                 }
-            } else {
+            } else /*if(moveChosen != 0)*/{
                 if(validSquare) {
                     activePiece.col = (mouse.x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
                     activePiece.row = (mouse.y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
+                    if(activePiece.hittingPiece != null) {
+                        pieces.remove(activePiece.hittingPiece.getIndex());
+                    }
                     activePiece.updatePosition();
                     activePiece = null;
                     Collections.sort(pieces, new PieceComparator());
@@ -85,19 +91,38 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void simulate() {
-        System.out.println(validSquare);
-        activePiece.x = (mouse.x/3) / (Board.SQUARE_SIZE) * (Board.SQUARE_SIZE);
-        activePiece.y = (mouse.y/3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE) * (Board.SQUARE_SIZE);
-        activePiece.col = (mouse.x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
-        activePiece.row = (mouse.y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
+        //if((mouse.x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE) <= 7 && (mouse.x / 3) / (Board.SQUARE_SIZE) >= 0 && (mouse.y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE) >= 0 && (mouse.y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE) <= 8){
+            activePiece.x = (mouse.x/3) / (Board.SQUARE_SIZE) * (Board.SQUARE_SIZE);
+            activePiece.y = (mouse.y/3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE) * (Board.SQUARE_SIZE);
+            activePiece.col = (mouse.x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
+            activePiece.row = (mouse.y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
 
-        if(activePiece.canMove(activePiece.col, activePiece.row)){
-            canMove = true;
-            validSquare = true;
-        } else {
-            canMove = false;
-            validSquare = false;
+            if(activePiece.canMove(activePiece.col, activePiece.row)){
+                canMove = true;
+                validSquare = true;
+            } else {
+                canMove = false;
+                validSquare = false;
+            }
+        //}
+
+    }
+
+    public void keyPressed(KeyEvent e) {
+        int key = e.getKeyCode();
+
+        if(key == KeyEvent.VK_1){
+            moveChosen = 1;
+        } else if(key == KeyEvent.VK_2){
+            moveChosen = 2;
+        } else if(key == KeyEvent.VK_3){
+            moveChosen = 3;
+        } else if(key == KeyEvent.VK_4){
+            moveChosen = 4;
         }
+    }
+    public void keyReleased(KeyEvent e) {
+
     }
 
     public void lunchGame() {

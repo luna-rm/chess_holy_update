@@ -12,4 +12,16 @@ public class Horse extends Piece {
             image = getImage("../imgs/b_horse");
         }
     }
+
+    @Override
+    public boolean canMove(int targetCol, int targetRow) {
+        if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
+            if(Math.abs(targetCol-preCol) * Math.abs(targetRow-preRow) == 2){
+                if(isValidSquare(targetCol, targetRow)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

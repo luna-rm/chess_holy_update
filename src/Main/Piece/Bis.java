@@ -12,4 +12,16 @@ public class Bis extends Piece {
             image = getImage("../imgs/b_bis");
         }
     }
+
+    @Override
+    public boolean canMove(int targetCol, int targetRow) {
+        if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
+            if (Math.abs(targetCol-preCol) == Math.abs(targetRow-preRow)) {
+                if (isValidSquare(targetCol, targetRow) && !pieceIsOnDiagonalLine(targetCol, targetRow)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
