@@ -37,7 +37,7 @@ public class Board {
         } else {
             g2.setColor(new Color(52, 49, 69));
         }
-        g2.fillRect(0, 0, main.frame.getWidth(), main.frame.getHeight());
+        g2.fillRect(0, 0, 480, 624);
 
         for(int row = 0; row < MAX_ROW; row++) {
             if(img == white){

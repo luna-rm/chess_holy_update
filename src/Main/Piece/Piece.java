@@ -70,7 +70,19 @@ public class Piece {
         g2.drawImage(image, x, y, Board.SQUARE_SIZE, Board.SPRITE_SIZE, null);
     }
 
-    public boolean canMove(int targetCol, int targetRow) {
+    public boolean canMove1(int targetCol, int targetRow) {
+        return false;
+    }
+
+    public boolean canMove2(int targetCol, int targetRow) {
+        return false;
+    }
+
+    public boolean canMove3(int targetCol, int targetRow) {
+        return false;
+    }
+
+    public boolean canMove4(int targetCol, int targetRow) {
         return false;
     }
 

@@ -14,7 +14,31 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public boolean canMove(int targetCol, int targetRow) {
+    public boolean canMove1(int targetCol, int targetRow) {
+        if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
+            int moveValue;
+            if(color == GamePanel.WHITE){
+                moveValue = -1;
+            } else {
+                moveValue = 1;
+            }
+
+            hittingPiece = getHittingPiece(targetCol, targetRow);
+
+            if(targetCol == preCol && targetRow == preRow+moveValue && hittingPiece == null){
+                return true;
+            }
+            if(!moved){
+                if(targetCol == preCol && targetRow == preRow+(2*moveValue) && hittingPiece == null){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canMove2(int targetCol, int targetRow) {
         if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
             int moveValue;
             if(color == GamePanel.WHITE){

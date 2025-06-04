@@ -14,7 +14,7 @@ public class Tower extends Piece {
     }
 
     @Override
-    public boolean canMove(int targetCol, int targetRow) {
+    public boolean canMove1(int targetCol, int targetRow) {
         if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
             if (targetCol == preCol || targetRow == preRow) {
                 if (isValidSquare(targetCol, targetRow) && !pieceIsOnStraightLine(targetCol, targetRow)) {

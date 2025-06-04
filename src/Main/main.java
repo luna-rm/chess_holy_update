@@ -3,24 +3,47 @@ package Main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class main {
-    public static JFrame frame = new JFrame("Chess - The Holy Update");
+public class main extends JFrame {
 
-    public static void main(String[] args) {
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
+    main(){
+        this.setTitle("Chess - The Holy Update");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(false);
 
         GamePanel panel = new GamePanel();
-        frame.add(panel);
-        frame.pack();
+        this.add(panel);
+        this.pack();
 
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+
+        InputMap inputMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = panel.getActionMap();
+
+        for (int i = 1; i <= 4; i++) {
+            String tecla = String.valueOf(i);
+            int valorModo = i;
+
+            inputMap.put(KeyStroke.getKeyStroke(tecla), "modo" + tecla);
+            actionMap.put("modo" + tecla, new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    GamePanel.moveChosen = valorModo;
+                }
+            });
+        }
 
         panel.lunchGame();
+
+
     }
 
+    public static void main(String[] args) {
+        new main();
+    }
 
 }

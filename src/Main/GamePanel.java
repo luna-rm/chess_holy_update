@@ -40,6 +40,10 @@ public class GamePanel extends JPanel implements Runnable {
     boolean canMove;
     boolean validSquare;
 
+    int[] slay = new int[]{0, 0};
+    int[] kin = new int[]{0, 0};
+    int[] divinity = new int[]{0, 0};
+
     private void update(){
         System.out.println(moveChosen);
         if(mouse.pressed && not_released == 1){
@@ -97,7 +101,8 @@ public class GamePanel extends JPanel implements Runnable {
             activePiece.col = (mouse.x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
             activePiece.row = (mouse.y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
 
-            if(activePiece.canMove(activePiece.col, activePiece.row)){
+
+            if(activePiece.canMove1(activePiece.col, activePiece.row)){
                 canMove = true;
                 validSquare = true;
             } else {
@@ -105,23 +110,6 @@ public class GamePanel extends JPanel implements Runnable {
                 validSquare = false;
             }
         //}
-
-    }
-
-    public void keyPressed(KeyEvent e) {
-        int key = e.getKeyCode();
-
-        if(key == KeyEvent.VK_1){
-            moveChosen = 1;
-        } else if(key == KeyEvent.VK_2){
-            moveChosen = 2;
-        } else if(key == KeyEvent.VK_3){
-            moveChosen = 3;
-        } else if(key == KeyEvent.VK_4){
-            moveChosen = 4;
-        }
-    }
-    public void keyReleased(KeyEvent e) {
 
     }
 
