@@ -5,7 +5,7 @@ import Main.GamePanel;
 public class Bis extends Piece {
     public Bis(int color, int col, int row) {
         super(color, col, row);
-
+        this.id = 3;
         if(color == GamePanel.WHITE){
             image = getImage("../imgs/w_bis");
         } else {

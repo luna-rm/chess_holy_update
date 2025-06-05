@@ -5,6 +5,7 @@ import Main.GamePanel;
 public class Horse extends Piece {
     public Horse(int color, int col, int row) {
         super(color, col, row);
+        this.id = 2;
 
         if(color == GamePanel.WHITE){
             image = getImage("../imgs/w_horse");

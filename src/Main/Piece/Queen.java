@@ -6,7 +6,7 @@ public class Queen extends Piece {
 
     public Queen(int color, int col, int row) {
         super(color, col, row);
-
+        this.id = 4;
         if(color == GamePanel.WHITE){
             image = getImage("../imgs/w_queen");
         } else {

@@ -9,7 +9,7 @@ public class Pawn extends Piece{
 
     public Pawn(int color, int col, int row) {
         super(color, col, row);
-
+        this.id = 0;
         if(color == GamePanel.WHITE){
             image = getImage("../imgs/w_pawn");
         } else {
@@ -20,11 +20,34 @@ public class Pawn extends Piece{
     @Override
     public boolean canMove1(int targetCol, int targetRow) {
         if(paladin){
+            if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
+                if(Math.abs(targetCol - preCol) + Math.abs(targetRow - preRow) == 1) {
+                    if(isValidSquare(targetCol, targetRow)) {
+                        return true;
+                    }
+                }
+                if(Math.abs(targetCol - preCol) * Math.abs(targetRow - preRow) == 1) {
+                    if(isValidSquare(targetCol, targetRow)) {
+                        return true;
+                    }
+                }
+            }
             return false;
         }
+
+
         if(cultist){
+            if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
+                if(Math.abs(targetCol - preCol) + Math.abs(targetRow - preRow) == 1) {
+                    if(isValidSquare(targetCol, targetRow)) {
+                        return true;
+                    }
+                }
+            }
             return false;
         }
+
+
         if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
             int moveValue;
             if(color == GamePanel.WHITE){
@@ -79,17 +102,15 @@ public class Pawn extends Piece{
     }
 
     public void move3(int x, int y){
-        if(GamePanel.divinity[this.color] > 0){
-            GamePanel.divinity[this.color]--;
-        }
+        unholyRitual();
         if(this.hittingPiece != null) {
             GamePanel.pieces.remove(this.hittingPiece.getIndex());
             GamePanel.slay[GamePanel.currentColor]++;
         }
-        GamePanel.moveChosen = 0;
-        GamePanel.activePiece = null;
         this.resetPosition();
         this.cultist = true;
+
+        changeTurn(true);
     }
 
     @Override
@@ -115,12 +136,15 @@ public class Pawn extends Piece{
     }
 
     public void move4(int x, int y){
+        holyPower();
         this.paladin = true;
-        if(GamePanel.divinity[this.color] < 10){
-            GamePanel.divinity[this.color]++;
+        this.col = (x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
+        this.row = (y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
+        if(this.hittingPiece != null) {
+            GamePanel.pieces.remove(this.hittingPiece.getIndex());
+            GamePanel.slay[GamePanel.currentColor]++;
         }
-        GamePanel.moveChosen = 0;
-        GamePanel.activePiece = null;
-        this.cultist = true;
+        this.updatePosition();
+        changeTurn(true);
     }
 }

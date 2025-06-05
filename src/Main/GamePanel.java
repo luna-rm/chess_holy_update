@@ -44,12 +44,10 @@ public class GamePanel extends JPanel implements Runnable {
     public static int[] kin = new int[]{0, 0};
     public static int[] divinity = new int[]{5, 5};
 
+    public static int fast = 0;
+
     private void update(){
-        System.out.println(moveChosen);
         if(mouse.pressed && not_released == 1){
-            for(Piece p : pieces){
-                System.out.println(p.row + " " + p.col);
-            }
             not_released = 0;
             if(activePiece == null) {
                 for (Piece p : pieces) {
@@ -138,10 +136,10 @@ public class GamePanel extends JPanel implements Runnable {
         pieces.add(new Horse(WHITE, 1, 8));
         pieces.add(new Horse(WHITE, 6, 8));
 
-        pieces.add(new Bis(WHITE, 2, 8));
+        pieces.add(new Bis(WHITE, 2, 5));
         pieces.add(new Bis(WHITE, 5, 8));
 
-        pieces.add(new Queen(WHITE, 3, 8));
+        pieces.add(new Queen(WHITE, 3, 5));
 
         pieces.add(new King(WHITE, 4, 8));
 

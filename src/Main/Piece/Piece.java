@@ -15,7 +15,10 @@ public class Piece {
     public int col, row, preCol, preRow, initCol, initRow;
     public int color;
     public Piece hittingPiece;
+    public int id;
     public boolean moved = false;
+    public boolean imortal = false;
+    public boolean burning = false;
 
     public Piece(int color, int col, int row) {
         this.color = color;
@@ -93,15 +96,9 @@ public class Piece {
             GamePanel.pieces.remove(this.hittingPiece.getIndex());
             GamePanel.slay[GamePanel.currentColor]++;
         }
-        GamePanel.moveChosen = 0;
         this.updatePosition();
-        GamePanel.activePiece = null;
 
-        if (GamePanel.currentColor == GamePanel.WHITE) {
-            GamePanel.currentColor = GamePanel.BLACK;
-        } else {
-            GamePanel.currentColor = GamePanel.WHITE;
-        }
+        changeTurn(false);
     }
 
     public void move2(int x, int y){
@@ -111,15 +108,9 @@ public class Piece {
             GamePanel.pieces.remove(this.hittingPiece.getIndex());
             GamePanel.slay[GamePanel.currentColor]++;
         }
-        GamePanel.moveChosen = 0;
         this.updatePosition();
-        GamePanel.activePiece = null;
 
-        if (GamePanel.currentColor == GamePanel.WHITE) {
-            GamePanel.currentColor = GamePanel.BLACK;
-        } else {
-            GamePanel.currentColor = GamePanel.WHITE;
-        }
+        changeTurn(false);
     }
 
     public void move3(int x, int y){
@@ -129,15 +120,9 @@ public class Piece {
             GamePanel.pieces.remove(this.hittingPiece.getIndex());
             GamePanel.slay[GamePanel.currentColor]++;
         }
-        GamePanel.moveChosen = 0;
         this.updatePosition();
-        GamePanel.activePiece = null;
 
-        if (GamePanel.currentColor == GamePanel.WHITE) {
-            GamePanel.currentColor = GamePanel.BLACK;
-        } else {
-            GamePanel.currentColor = GamePanel.WHITE;
-        }
+        changeTurn(false);
     }
 
     public void move4(int x, int y){
@@ -147,15 +132,9 @@ public class Piece {
             GamePanel.pieces.remove(this.hittingPiece.getIndex());
             GamePanel.slay[GamePanel.currentColor]++;
         }
-        GamePanel.moveChosen = 0;
         this.updatePosition();
-        GamePanel.activePiece = null;
 
-        if (GamePanel.currentColor == GamePanel.WHITE) {
-            GamePanel.currentColor = GamePanel.BLACK;
-        } else {
-            GamePanel.currentColor = GamePanel.WHITE;
-        }
+        changeTurn(false);
     }
 
     public boolean isWithinBoard(int targetCol, int targetRow) {
@@ -290,6 +269,35 @@ public class Piece {
             }
         }
         return false;
+    }
+
+    public void changeTurn(boolean isFast){
+        GamePanel.moveChosen = 0;
+        GamePanel.activePiece = null;
+        if(isFast){
+            if(GamePanel.fast == 0){
+                GamePanel.fast++;
+                return;
+            }
+        }
+        if (GamePanel.currentColor == GamePanel.WHITE) {
+            GamePanel.currentColor = GamePanel.BLACK;
+        } else {
+            GamePanel.currentColor = GamePanel.WHITE;
+        }
+        GamePanel.fast = 0;
+    }
+
+    public void holyPower(){
+        if(GamePanel.divinity[this.color] < 10){
+            GamePanel.divinity[this.color]++;
+        }
+    }
+
+    public void unholyRitual(){
+        if(GamePanel.divinity[this.color] > 0){
+            GamePanel.divinity[this.color]--;
+        }
     }
 
     public void resetPosition() {
