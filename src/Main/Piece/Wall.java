@@ -5,7 +5,7 @@ import Main.GamePanel;
 public class Wall extends Piece {
     public Wall(int color, int col, int row) {
         super(color, col, row);
-        this.id = 1;
+        this.id = 6;
 
         if(color == GamePanel.WHITE){
             image = getImage("../imgs/w_wall");

@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Piece {
@@ -18,7 +19,6 @@ public class Piece {
     public int id;
     public boolean moved = false;
     public boolean imortal = false;
-    public boolean burning = false;
 
     public Piece(int color, int col, int row) {
         this.color = color;
@@ -156,7 +156,7 @@ public class Piece {
     public boolean isValidSquare(int targetCol, int targetRow) {
         hittingPiece = getHittingPiece(targetCol, targetRow);
 
-        if(hittingPiece == null) {
+        if(hittingPiece == null || hittingPiece.id == 7) {
             return true;
         } else {
             if(hittingPiece.color != this.color) {
@@ -280,12 +280,29 @@ public class Piece {
                 return;
             }
         }
+        if(GamePanel.two_turns[this.color] == 1){
+            GamePanel.fast = 0;
+            GamePanel.two_turns[this.color] = 0;
+            return;
+        }
         if (GamePanel.currentColor == GamePanel.WHITE) {
             GamePanel.currentColor = GamePanel.BLACK;
         } else {
             GamePanel.currentColor = GamePanel.WHITE;
         }
         GamePanel.fast = 0;
+
+        ArrayList<Burn> stop = new ArrayList<>();
+        for(Burn burn : GamePanel.burns){
+            burn.countdown++;
+            if(burn.countdown == 2){
+                stop.add(burn);
+                burn.move1(0, 0);
+            }
+        }
+        for(Burn burn : stop){
+            GamePanel.burns.remove(burn);
+        }
     }
 
     public void holyPower(){
@@ -305,5 +322,22 @@ public class Piece {
         row = preRow;
         x = getX(col);
         y = getY(row);
+    }
+
+    public void unSelect(){
+        GamePanel.moveChosen = 0;
+        GamePanel.activePiece = null;
+    }
+
+    public boolean canCast(int color, int sl, int si, int di){
+        if(sl >= GamePanel.slay[color]){
+            if (si >= GamePanel.sin[color]){
+                if(di >= GamePanel.divinity[color]){
+                    return true;
+                }
+            }
+        }
+        unSelect();
+        return false;
     }
 }

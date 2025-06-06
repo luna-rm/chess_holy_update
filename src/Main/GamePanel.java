@@ -14,6 +14,14 @@ class PieceComparator implements Comparator<Piece> {
 
     // override the compare() method
     public int compare(Piece p1, Piece p2) {
+        if(p1.row == p2.row && p1.id == 7){
+            return -1;
+        }
+
+        if(p1.row == p2.row && p2.id == 7){
+            return 1;
+        }
+
         return Integer.compare(p1.row, p2.row);
     }
 }
@@ -28,6 +36,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public static ArrayList<Piece> pieces = new ArrayList<>();
     public static ArrayList<Piece> simPieces = new ArrayList<>();
+    public static ArrayList<Burn> burns = new ArrayList<>();
     public static Piece activePiece;
 
     public static final int WHITE = 0;
@@ -40,10 +49,11 @@ public class GamePanel extends JPanel implements Runnable {
     boolean canMove;
     boolean validSquare;
 
-    public static int[] slay = new int[]{0, 0};
-    public static int[] kin = new int[]{0, 0};
+    public static int[] slay = new int[]{1, 0};
+    public static int[] sin = new int[]{0, 0};
     public static int[] divinity = new int[]{5, 5};
 
+    public static int[] two_turns = new int[]{0, 0};
     public static int fast = 0;
 
     private void update(){
@@ -67,6 +77,22 @@ public class GamePanel extends JPanel implements Runnable {
                         activePiece.move4(mouse.x, mouse.y);
                     }
                     Collections.sort(pieces, new PieceComparator());
+
+                    int[] howManyBis = new int[]{0, 0};
+                    for(Piece p : pieces){
+                        if(p.id == 3){
+                            howManyBis[p.color]++;
+                        }
+                    }
+                    sin[WHITE] = 2 - howManyBis[WHITE];
+                    if(sin[WHITE] < 0){
+                        sin[WHITE] = 0;
+                    }
+
+                    sin[BLACK] = 2 - howManyBis[BLACK];
+                    if(sin[BLACK] < 0){
+                        sin[BLACK] = 0;
+                    }
                 }
             }
         }
@@ -77,6 +103,10 @@ public class GamePanel extends JPanel implements Runnable {
                 activePiece.resetPosition();
             }
             activePiece = null;
+
+            System.out.println(slay[0] + " " + slay[1]);
+            System.out.println(sin[0] + " " + sin[1]);
+            System.out.println(divinity[0] + " " + divinity[1]);
         }
 
         if(!mouse.pressed && not_released == 0) {
@@ -136,12 +166,12 @@ public class GamePanel extends JPanel implements Runnable {
         pieces.add(new Horse(WHITE, 1, 8));
         pieces.add(new Horse(WHITE, 6, 8));
 
-        pieces.add(new Bis(WHITE, 2, 5));
-        pieces.add(new Bis(WHITE, 5, 8));
+        pieces.add(new Bis(WHITE, 2, 2));
+        pieces.add(new Bis(WHITE, 5, 2));
 
         pieces.add(new Queen(WHITE, 3, 5));
 
-        pieces.add(new King(WHITE, 4, 8));
+        pieces.add(new King(WHITE, 4, 3));
 
         pieces.add(new Pawn(BLACK, 0, 1));
         pieces.add(new Pawn(BLACK, 1, 1));

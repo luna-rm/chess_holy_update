@@ -39,7 +39,6 @@ public class main extends JFrame {
 
         panel.lunchGame();
 
-
     }
 
     public static void main(String[] args) {

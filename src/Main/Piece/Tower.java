@@ -72,6 +72,27 @@ public class Tower extends Piece {
     }
 
     @Override
+    public boolean canMove3(int targetCol, int targetRow) {
+        if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
+            if(Math.abs(targetCol - preCol) + Math.abs(targetRow - preRow) == 2) {
+                return true;
+            }
+            if(Math.abs(targetCol - preCol) * Math.abs(targetRow - preRow) == 2) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void move3(int x, int y) {
+        unholyRitual();
+        GamePanel.pieces.add(new Burn(this.color, (x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE), (y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE)));
+        GamePanel.burns.add(new Burn(this.color, (x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE), (y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE)));
+        this.resetPosition();
+        changeTurn(false);
+    }
+
+    @Override
     public boolean canMove4(int targetCol, int targetRow) {
         int moveValue;
         if(color == GamePanel.WHITE){
@@ -89,6 +110,7 @@ public class Tower extends Piece {
     }
 
     public void move4(int x, int y) {
+        holyPower();
         GamePanel.pieces.add(new Wall(this.color, this.preCol, this.preRow));
 
         this.col = (x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
