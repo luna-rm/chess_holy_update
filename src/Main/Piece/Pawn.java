@@ -4,9 +4,6 @@ import Main.Board;
 import Main.GamePanel;
 
 public class Pawn extends Piece{
-    boolean paladin = false;
-    boolean cultist = false;
-
     public Pawn(int color, int col, int row) {
         super(color, col, row);
         this.id = 0;
@@ -19,35 +16,6 @@ public class Pawn extends Piece{
 
     @Override
     public boolean canMove1(int targetCol, int targetRow) {
-        if(paladin){
-            if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
-                if(Math.abs(targetCol - preCol) + Math.abs(targetRow - preRow) == 1) {
-                    if(isValidSquare(targetCol, targetRow)) {
-                        return true;
-                    }
-                }
-                if(Math.abs(targetCol - preCol) * Math.abs(targetRow - preRow) == 1) {
-                    if(isValidSquare(targetCol, targetRow)) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-
-        if(cultist){
-            if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
-                if(Math.abs(targetCol - preCol) + Math.abs(targetRow - preRow) == 1) {
-                    if(isValidSquare(targetCol, targetRow)) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-
         if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
             int moveValue;
             if(color == GamePanel.WHITE){
@@ -94,7 +62,7 @@ public class Pawn extends Piece{
         hittingPiece = getHittingPiece(targetCol, targetRow);
 
         if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
-            if(hittingPiece != null && hittingPiece.color == color && hittingPiece != this) {
+            if(hittingPiece != null && hittingPiece.color == color && hittingPiece != this && hittingPiece.id == 0) {
                 return true;
             }
         }
@@ -108,43 +76,45 @@ public class Pawn extends Piece{
             GamePanel.slay[GamePanel.currentColor]++;
         }
         this.resetPosition();
-        this.cultist = true;
+        GamePanel.pieces.add(new Cultist(this.color, this.col, this.row));
+        GamePanel.pieces.remove(this.hittingPiece.getIndex());
 
         changeTurn(true);
     }
 
     @Override
     public boolean canMove4(int targetCol, int targetRow) {
-        if(GamePanel.divinity[this.color] >= 3){
-            int moveValue;
-            if(color == GamePanel.WHITE){
-                moveValue = -1;
-            } else {
-                moveValue = 1;
-            }
+        int moveValue;
+        if(color == GamePanel.WHITE){
+            moveValue = -1;
+        } else {
+            moveValue = 1;
+        }
 
-            hittingPiece = getHittingPiece(targetCol, targetRow);
+        hittingPiece = getHittingPiece(targetCol, targetRow);
 
-            if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
-                if(targetCol == preCol && targetRow == preRow+moveValue && hittingPiece == null){
-                    return true;
-                }
+        if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
+            if(targetCol == preCol && targetRow == preRow+moveValue && hittingPiece == null){
+                return true;
             }
-            return false;
         }
         return false;
     }
 
     public void move4(int x, int y){
-        holyPower();
-        this.paladin = true;
-        this.col = (x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
-        this.row = (y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
-        if(this.hittingPiece != null) {
+        if(GamePanel.divinity[this.color] >= 3) {
+            holyPower();
+            this.col = (x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
+            this.row = (y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
+            if(this.hittingPiece != null) {
+                GamePanel.pieces.remove(this.hittingPiece.getIndex());
+                GamePanel.slay[GamePanel.currentColor]++;
+            }
+            this.updatePosition();
+            GamePanel.pieces.add(new Paladin(this.color, this.col, this.row));
             GamePanel.pieces.remove(this.hittingPiece.getIndex());
-            GamePanel.slay[GamePanel.currentColor]++;
+
+            changeTurn(false);
         }
-        this.updatePosition();
-        changeTurn(true);
     }
 }

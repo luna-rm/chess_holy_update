@@ -49,10 +49,11 @@ public class GamePanel extends JPanel implements Runnable {
     boolean canMove;
     boolean validSquare;
 
-    public static int[] slay = new int[]{1, 0};
-    public static int[] sin = new int[]{0, 0};
+    public static int[] slay = new int[]{6, 6};
+    public static int[] sin = new int[]{1, 1};
     public static int[] divinity = new int[]{5, 5};
 
+    public static int horseMove4Aux = 0;
     public static int[] two_turns = new int[]{0, 0};
     public static int fast = 0;
 
@@ -61,8 +62,10 @@ public class GamePanel extends JPanel implements Runnable {
             not_released = 0;
             if(activePiece == null) {
                 for (Piece p : pieces) {
-                    if (p.color == currentColor && p.col == (mouse.x/3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE) && p.row == (mouse.y/3 - Board.SQUARE_SIZE*2) / (Board.SQUARE_SIZE)) {
-                        activePiece = p;
+                    if(horseMove4Aux == 0){
+                        if (p.color == currentColor && p.col == (mouse.x/3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE) && p.row == (mouse.y/3 - Board.SQUARE_SIZE*2) / (Board.SQUARE_SIZE)) {
+                            activePiece = p;
+                        }
                     }
                 }
             } else if(moveChosen != 0){
@@ -97,7 +100,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
-        if(mouse.right){
+        if(mouse.right && horseMove4Aux == 0){
             not_released = 1;
             if(activePiece != null) {
                 activePiece.resetPosition();
@@ -166,12 +169,12 @@ public class GamePanel extends JPanel implements Runnable {
         pieces.add(new Horse(WHITE, 1, 8));
         pieces.add(new Horse(WHITE, 6, 8));
 
-        pieces.add(new Bis(WHITE, 2, 2));
-        pieces.add(new Bis(WHITE, 5, 2));
+        pieces.add(new Bis(WHITE, 2, 8));
+        pieces.add(new Bis(WHITE, 5, 8));
 
-        pieces.add(new Queen(WHITE, 3, 5));
+        pieces.add(new Queen(WHITE, 3, 8));
 
-        pieces.add(new King(WHITE, 4, 3));
+        pieces.add(new King(WHITE, 4, 8));
 
         pieces.add(new Pawn(BLACK, 0, 1));
         pieces.add(new Pawn(BLACK, 1, 1));

@@ -19,6 +19,7 @@ public class Piece {
     public int id;
     public boolean moved = false;
     public boolean imortal = false;
+    public boolean divineShield = false;
 
     public Piece(int color, int col, int row) {
         this.color = color;
@@ -302,6 +303,10 @@ public class Piece {
         }
         for(Burn burn : stop){
             GamePanel.burns.remove(burn);
+        }
+
+        if(GamePanel.horseMove4Aux != 0){
+            GamePanel.horseMove4Aux--;
         }
     }
 

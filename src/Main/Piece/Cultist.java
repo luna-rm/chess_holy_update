@@ -2,18 +2,18 @@ package Main.Piece;
 
 import Main.GamePanel;
 
-public class King extends Piece{
-    public King(int color, int col, int row) {
+public class Cultist extends Piece{
+    public Cultist(int color, int col, int row) {
         super(color, col, row);
-        divineShield = true;
-        this.id = 5;
+        this.id = 0;
         if(color == GamePanel.WHITE){
-            image = getImage("../imgs/w_king");
+            image = getImage("../imgs/w_pawn");
         } else {
-            image = getImage("../imgs/b_king");
+            image = getImage("../imgs/b_pawn");
         }
     }
 
+    @Override
     public boolean canMove1(int targetCol, int targetRow) {
         if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
             if(Math.abs(targetCol - preCol) + Math.abs(targetRow - preRow) == 1) {
@@ -21,13 +21,7 @@ public class King extends Piece{
                     return true;
                 }
             }
-            if(Math.abs(targetCol - preCol) * Math.abs(targetRow - preRow) == 1) {
-                if(isValidSquare(targetCol, targetRow)) {
-                    return true;
-                }
-            }
         }
-
         return false;
     }
 }
