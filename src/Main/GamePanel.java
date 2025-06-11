@@ -11,8 +11,6 @@ import java.util.Collections;
 import java.util.Comparator;
 
 class PieceComparator implements Comparator<Piece> {
-
-    // override the compare() method
     public int compare(Piece p1, Piece p2) {
         if(p1.row == p2.row && p1.id == 7){
             return -1;
@@ -50,8 +48,12 @@ public class GamePanel extends JPanel implements Runnable {
     boolean validSquare;
 
     public static int[] slay = new int[]{6, 6};
-    public static int[] sin = new int[]{1, 1};
-    public static int[] divinity = new int[]{5, 5};
+    public static int[] sin = new int[]{0, 0};
+    public static int[] divinity = new int[]{6, 4};
+
+    public static int[] reqSlay = new int[]{0, 0};
+    public static int[] reqSin = new int[]{0, 0};
+    public static int[] reqDivinity = new int[]{0, 0};
 
     public static int horseMove4Aux = 0;
     public static int[] two_turns = new int[]{0, 0};
@@ -63,7 +65,7 @@ public class GamePanel extends JPanel implements Runnable {
             if(activePiece == null) {
                 for (Piece p : pieces) {
                     if(horseMove4Aux == 0){
-                        if (p.color == currentColor && p.col == (mouse.x/3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE) && p.row == (mouse.y/3 - Board.SQUARE_SIZE*2) / (Board.SQUARE_SIZE)) {
+                        if (p.color == currentColor && p.col == (mouse.x/3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE) && p.row == (mouse.y/3 - Board.SQUARE_SIZE*2) / (Board.SQUARE_SIZE) && !p.chained) {
                             activePiece = p;
                         }
                     }
@@ -102,6 +104,15 @@ public class GamePanel extends JPanel implements Runnable {
 
         if(mouse.right && horseMove4Aux == 0){
             not_released = 1;
+
+            GamePanel.moveChosen = 0;
+            GamePanel.reqDivinity[0] = 0;
+            GamePanel.reqDivinity[1] = 0;
+            GamePanel.reqSlay[0] = 0;
+            GamePanel.reqSlay[1] = 0;
+            GamePanel.reqSin[0] = 0;
+            GamePanel.reqSin[1] = 0;
+
             if(activePiece != null) {
                 activePiece.resetPosition();
             }
@@ -128,16 +139,16 @@ public class GamePanel extends JPanel implements Runnable {
             activePiece.col = (mouse.x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
             activePiece.row = (mouse.y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
 
-            if(activePiece.canMove1(activePiece.col, activePiece.row) && moveChosen == 1){
+            if(moveChosen == 1 && activePiece.canMove1(activePiece.col, activePiece.row)){
                 canMove = true;
                 validSquare = true;
-            } else if (activePiece.canMove2(activePiece.col, activePiece.row) && moveChosen == 2){
+            } else if (moveChosen == 2 && activePiece.canMove2(activePiece.col, activePiece.row)){
                 canMove = true;
                 validSquare = true;
-            } else if (activePiece.canMove3(activePiece.col, activePiece.row) && moveChosen == 3){
+            } else if (moveChosen == 3 && activePiece.canMove3(activePiece.col, activePiece.row)){
                 canMove = true;
                 validSquare = true;
-            } else if (activePiece.canMove4(activePiece.col, activePiece.row) && moveChosen == 4){
+            } else if (moveChosen == 4 && activePiece.canMove4(activePiece.col, activePiece.row)){
                 canMove = true;
                 validSquare = true;
             } else {

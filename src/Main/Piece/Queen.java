@@ -45,66 +45,67 @@ public class Queen extends Piece {
 
     @Override
     public boolean canMove3(int targetCol, int targetRow) {
-        if (isWithinBoard(targetCol, targetRow) && isSameSquare(targetCol, targetRow)) {
-            return true;
+        if(reqSlay(1) && reqSin(2)) {
+            if (isWithinBoard(targetCol, targetRow) && isSameSquare(targetCol, targetRow)) {
+                return true;
+            }
         }
-
         return false;
     }
 
     public void move3(int x, int y){
-        if(GamePanel.slay[this.color] >= 1 && GamePanel.sin[this.color] >= 2) {
-            Piece king = null;
-            for (Piece piece : GamePanel.pieces) {
-                if (piece.id == 5 && piece.color == this.color) {
-                    king = piece;
-                }
+        Piece king = null;
+        for (Piece piece : GamePanel.pieces) {
+            if (piece.id == 5 && piece.color == this.color) {
+                king = piece;
+            }
+        }
+
+        if (king == null) {
+            unSelect();
+            return;
+        }
+
+        boolean isAble = false;
+        for (Piece piece : GamePanel.pieces) {
+            if (Math.abs(king.preCol - piece.col) + Math.abs(king.preRow - piece.row) == 1 || Math.abs(king.preCol - piece.col) * Math.abs(king.preRow - piece.row) == 1) {
+                isAble = true;
             }
 
-            if (king == null) {
-                unSelect();
-                return;
-            }
+        }
 
-            boolean isAble = false;
-            for (Piece piece : GamePanel.pieces) {
-                if (Math.abs(king.preCol - piece.col) + Math.abs(king.preRow - piece.row) == 1 || Math.abs(king.preCol - piece.col) * Math.abs(king.preRow - piece.row) == 1) {
-                    isAble = true;
-                }
+        if (isAble) {
+            spendSlay(1);
+            unholyRitual();
+            GamePanel.slay[this.color] += 1;
+            GamePanel.pieces.remove(this);
+            GamePanel.two_turns[this.color] = 1;
+            changeTurn(true);
 
-            }
-
-            if (isAble) {
-                GamePanel.slay[this.color] -= 1;
-                unholyRitual();
-                GamePanel.slay[this.color] += 1;
-                GamePanel.pieces.remove(this);
-                GamePanel.two_turns[this.color] = 1;
-                changeTurn(true);
-            }
         }
     }
 
     @Override
     public boolean canMove4(int targetCol, int targetRow) {
-        if (isWithinBoard(targetCol, targetRow) && isSameSquare(targetCol, targetRow)) {
-            return true;
+        if(reqDiv(9)) {
+            if (isWithinBoard(targetCol, targetRow) && isSameSquare(targetCol, targetRow)) {
+                return true;
+            }
         }
         return false;
     }
 
     public void move4(int x, int y){
-        if(GamePanel.divinity[this.color] >= 9) {
-            holyPower();
-            GamePanel.divinity[this.color] = 0;
+        holyPower();
+        GamePanel.divinity[this.color] = 0;
 
-            for (Piece piece : GamePanel.pieces) {
-                piece.col = piece.initCol;
-                piece.row = piece.initRow;
-                piece.updatePosition();
-            }
-
-            changeTurn(false);
+        for (Piece piece : GamePanel.pieces) {
+            piece.col = piece.initCol;
+            piece.row = piece.initRow;
+            piece.updatePosition();
         }
+
+        changeTurn(false);
     }
+
 }

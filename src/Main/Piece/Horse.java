@@ -39,7 +39,9 @@ public class Horse extends Piece {
 
         if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
             if(hittingPiece != null && Math.abs(targetCol - preCol) == 0 && targetRow == preRow + moveValue) {
-                return true;
+                if(hittingPiece.immortal == 0){
+                    return true;
+                }
             }
         }
         return false;
@@ -57,53 +59,55 @@ public class Horse extends Piece {
 
     @Override
     public boolean canMove3(int targetCol, int targetRow) {
-        hittingPiece = getHittingPiece(targetCol, targetRow);
+        if(reqSlay(4)) {
+            hittingPiece = getHittingPiece(targetCol, targetRow);
 
-        if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
-            if(hittingPiece != null && hittingPiece.divineShield == false) {
-                return true;
+            if (isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
+                if (hittingPiece != null && hittingPiece.divineShield == false) {
+                    return true;
+                }
             }
         }
         return false;
     }
 
     public void move3(int x, int y){
-        if(GamePanel.slay[this.color] >= 4){
-            GamePanel.slay[this.color] -= 4;
-            GamePanel.pieces.add(new Horse(this.hittingPiece.color, this.hittingPiece.col, this.hittingPiece.row));
-            GamePanel.pieces.remove(this.hittingPiece.getIndex());
+        spendSlay(4);
+        Horse horse = new Horse(this.hittingPiece.color, this.hittingPiece.col, this.hittingPiece.row);
+        horse.immortal = hittingPiece.immortal;
+        GamePanel.pieces.add(horse);
+        GamePanel.pieces.remove(this.hittingPiece.getIndex());
 
-            this.resetPosition();
-            changeTurn(false);
-        }
+        this.resetPosition();
+        changeTurn(false);
+
     }
 
     @Override
     public boolean canMove4(int targetCol, int targetRow) {
-        hittingPiece = getHittingPiece(targetCol, targetRow);
+        if(reqSlay(6) && reqSin(1)) {
+            hittingPiece = getHittingPiece(targetCol, targetRow);
 
-        if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
-            int enemy = GamePanel.WHITE;
-            if(this.color == GamePanel.WHITE){
-                enemy = GamePanel.BLACK;
-            }
-            if(hittingPiece != null && hittingPiece.color == enemy) {
-                return true;
+            if (isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
+                int enemy = GamePanel.WHITE;
+                if (this.color == GamePanel.WHITE) {
+                    enemy = GamePanel.BLACK;
+                }
+                if (hittingPiece != null && hittingPiece.color == enemy && !hittingPiece.chained) {
+                    return true;
+                }
             }
         }
         return false;
     }
 
     public void move4(int x, int y){
-        if(GamePanel.slay[this.color] >= 6 && GamePanel.sin[this.color] >= 0){
-            GamePanel.slay[this.color] -= 6;
-            this.resetPosition();
+        spendSlay(6);
+        this.resetPosition();
 
-            GamePanel.horseMove4Aux = 2;
-            GamePanel.activePiece = this.hittingPiece;
+        GamePanel.horseMove4Aux = 2;
+        GamePanel.activePiece = this.hittingPiece;
 
-            GamePanel.two_turns[this.color] = 1;
-            changeTurn(false);
-        }
+        changeTurn(true);
     }
 }

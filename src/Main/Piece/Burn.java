@@ -19,7 +19,9 @@ public class Burn extends Piece {
         GamePanel.pieces.remove(this);
         for(Piece piece : GamePanel.pieces) {
             if(Math.abs(this.preCol - piece.col) + Math.abs(this.preRow - piece.row) == 1 || (this.preCol == piece.col && this.preRow == piece.row)) {
-                kill.add(piece);
+                if(piece.immortal == 0){
+                    kill.add(piece);
+                }
             }
         }
         for(Piece piece : kill) {

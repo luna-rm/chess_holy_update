@@ -17,6 +17,9 @@ public class Board {
     public static final int HALF_SQUARE_SIZE = SQUARE_SIZE / 2;
 
     public static BufferedImage black, white, bc, wc;
+    public static BufferedImage divinity, no_divinity, need_divinity;
+    public static BufferedImage sin, no_sin, need_sin;
+    public static BufferedImage slay, need_slay;
 
     static int scale = 3;
 
@@ -29,6 +32,17 @@ public class Board {
         white = ImageIO.read(Objects.requireNonNull(Board.class.getResourceAsStream("./imgs/w_square.png")));
         bc = ImageIO.read(Objects.requireNonNull(Board.class.getResourceAsStream("./imgs/b_c_square.png")));
         wc = ImageIO.read(Objects.requireNonNull(Board.class.getResourceAsStream("./imgs/w_c_square.png")));
+
+        divinity = ImageIO.read(Objects.requireNonNull(Board.class.getResourceAsStream("./imgs/divinity.png")));
+        no_divinity = ImageIO.read(Objects.requireNonNull(Board.class.getResourceAsStream("./imgs/no_divinity.png")));
+        need_divinity = ImageIO.read(Objects.requireNonNull(Board.class.getResourceAsStream("./imgs/need_divinity.png")));
+
+        sin = ImageIO.read(Objects.requireNonNull(Board.class.getResourceAsStream("./imgs/sin.png")));
+        no_sin = ImageIO.read(Objects.requireNonNull(Board.class.getResourceAsStream("./imgs/no_sin.png")));
+        need_sin = ImageIO.read(Objects.requireNonNull(Board.class.getResourceAsStream("./imgs/need_sin.png")));
+
+        slay = ImageIO.read(Objects.requireNonNull(Board.class.getResourceAsStream("./imgs/slay.png")));
+        need_slay = ImageIO.read(Objects.requireNonNull(Board.class.getResourceAsStream("./imgs/need_slay.png")));
 
         BufferedImage img = black;
 
@@ -111,5 +125,92 @@ public class Board {
             }
         }
 
+        int div = GamePanel.divinity[GamePanel.BLACK];
+        for(int i = 0; i < 10; i++){
+            if(div > 0){
+                div--;
+                g2.drawImage(divinity, i * SQUARE_SIZE/2 + SQUARE_SIZE, -SQUARE_SIZE/2, null);
+            } else {
+                g2.drawImage(no_divinity, i * SQUARE_SIZE/2 + SQUARE_SIZE, -SQUARE_SIZE/2, null);
+            }
+        }
+
+        for(int i = 0; i < GamePanel.reqDivinity[GamePanel.BLACK]; i++){
+            g2.drawImage(need_divinity, i * SQUARE_SIZE/2 + SQUARE_SIZE, -SQUARE_SIZE/2, null);
+        }
+
+        int si = GamePanel.sin[GamePanel.BLACK];
+        for(int i = 0; i < 2; i++){
+            if(si > 0){
+                si--;
+                g2.drawImage(sin, i * SQUARE_SIZE + SQUARE_SIZE*7, -SQUARE_SIZE/2, null);
+            } else {
+                g2.drawImage(no_sin, i * SQUARE_SIZE + SQUARE_SIZE*7, -SQUARE_SIZE/2, null);
+            }
+        }
+
+        for(int i = 0; i < GamePanel.reqSin[GamePanel.BLACK]; i++){
+            g2.drawImage(need_sin, i * SQUARE_SIZE + SQUARE_SIZE*7, -SQUARE_SIZE/2, null);
+        }
+
+        for(int i = 0; i < GamePanel.slay[GamePanel.BLACK] && i < 40; i++){
+            if(i % 2 == 0){
+                g2.drawImage(slay, i * SQUARE_SIZE/8 + SQUARE_SIZE, -4, null);
+            } else {
+                g2.drawImage(slay, i * SQUARE_SIZE/8 + SQUARE_SIZE, 0, null);
+            }
+        }
+
+        for(int i = 0; i < GamePanel.reqSlay[GamePanel.BLACK] && i < 40; i++){
+            if(i % 2 == 0){
+                g2.drawImage(need_slay, i * SQUARE_SIZE/8 + SQUARE_SIZE, -4, null);
+            } else {
+                g2.drawImage(need_slay, i * SQUARE_SIZE/8 + SQUARE_SIZE, 0, null);
+            }
+        }
+
+        div = GamePanel.divinity[GamePanel.WHITE];
+        for(int i = 0; i < 10; i++){
+            if(div > 0){
+                div--;
+                g2.drawImage(divinity, i * SQUARE_SIZE/2 + SQUARE_SIZE, SQUARE_SIZE*MAX_ROW + SQUARE_SIZE*3 - SQUARE_SIZE*5/4, null);
+            } else {
+                g2.drawImage(no_divinity, i * SQUARE_SIZE/2 + SQUARE_SIZE, SQUARE_SIZE*MAX_ROW + SQUARE_SIZE*3 - SQUARE_SIZE*5/4, null);
+            }
+        }
+
+        for(int i = 0; i < GamePanel.reqDivinity[GamePanel.WHITE]; i++){
+            g2.drawImage(need_divinity, i * SQUARE_SIZE/2 + SQUARE_SIZE, SQUARE_SIZE*MAX_ROW + SQUARE_SIZE*3 - SQUARE_SIZE*5/4, null);
+        }
+
+        si = GamePanel.sin[GamePanel.WHITE];
+        for(int i = 0; i < 2; i++){
+            if(si > 0){
+                si--;
+                g2.drawImage(sin, i * SQUARE_SIZE + SQUARE_SIZE*7, SQUARE_SIZE*MAX_ROW + SQUARE_SIZE*3 - SQUARE_SIZE*4/3, null);
+            } else {
+                g2.drawImage(no_sin, i * SQUARE_SIZE + SQUARE_SIZE*7, SQUARE_SIZE*MAX_ROW + SQUARE_SIZE*3 - SQUARE_SIZE*4/3, null);
+            }
+        }
+
+        for(int i = 0; i < GamePanel.reqSin[GamePanel.WHITE]; i++){
+            g2.drawImage(need_sin, i * SQUARE_SIZE + SQUARE_SIZE*7, SQUARE_SIZE*MAX_ROW + SQUARE_SIZE*3 - SQUARE_SIZE*4/3, null);
+        }
+
+        for(int i = 0; i < GamePanel.slay[GamePanel.WHITE] && i < 40; i++){
+            if(i % 2 == 0){
+                g2.drawImage(slay, i * SQUARE_SIZE/8 + SQUARE_SIZE, SQUARE_SIZE*MAX_ROW + SQUARE_SIZE*3 - SQUARE_SIZE*3/4 - 4, null);
+            } else {
+                g2.drawImage(slay, i * SQUARE_SIZE/8 + SQUARE_SIZE, SQUARE_SIZE*MAX_ROW + SQUARE_SIZE*3 - SQUARE_SIZE*3/4, null);
+            }
+        }
+
+        for(int i = 0; i < GamePanel.reqSlay[GamePanel.WHITE] && i < 40; i++){
+            if(i % 2 == 0){
+                g2.drawImage(need_slay, i * SQUARE_SIZE/8 + SQUARE_SIZE, SQUARE_SIZE*MAX_ROW + SQUARE_SIZE*3 - SQUARE_SIZE*3/4 - 4, null);
+            } else {
+                g2.drawImage(need_slay, i * SQUARE_SIZE/8 + SQUARE_SIZE, SQUARE_SIZE*MAX_ROW + SQUARE_SIZE*3 - SQUARE_SIZE*3/4, null);
+            }
+        }
     }
 }

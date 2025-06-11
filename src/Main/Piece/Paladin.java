@@ -6,7 +6,7 @@ public class Paladin extends Piece {
     public Paladin(int color, int col, int row) {
         super(color, col, row);
         divineShield = true;
-        this.id = 0;
+        this.id = 9;
         if(color == GamePanel.WHITE){
             image = getImage("../imgs/w_pawn");
         } else {

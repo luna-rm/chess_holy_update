@@ -1,15 +1,18 @@
 package Main.Piece;
 
+import Main.Board;
 import Main.GamePanel;
+
+import java.util.ArrayList;
 
 public class Cultist extends Piece{
     public Cultist(int color, int col, int row) {
         super(color, col, row);
-        this.id = 0;
+        this.id = 8;
         if(color == GamePanel.WHITE){
-            image = getImage("../imgs/w_pawn");
+            image = getImage("../imgs/w_tower");
         } else {
-            image = getImage("../imgs/b_pawn");
+            image = getImage("../imgs/b_tower");
         }
     }
 
@@ -23,5 +26,92 @@ public class Cultist extends Piece{
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean canMove2(int targetCol, int targetRow) {
+        hittingPiece = getHittingPiece(targetCol, targetRow);
+
+        if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
+            if(Math.abs(targetCol - preCol) * Math.abs(targetRow - preRow) == 1) {
+                if(hittingPiece != null) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void move2(int x, int y) {
+        this.col = (x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
+        this.row = (y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
+        if(this.hittingPiece != null) {
+            GamePanel.pieces.remove(this.hittingPiece.getIndex());
+            GamePanel.slay[GamePanel.currentColor] += 2;
+        }
+        this.updatePosition();
+
+        changeTurn(true);
+    }
+
+    @Override
+    public boolean canMove3(int targetCol, int targetRow) {
+        if(reqSlay(2) && reqSin(1)) {
+            hittingPiece = getHittingPiece(targetCol, targetRow);
+
+            if (isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
+                if (hittingPiece != null) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void move3(int x, int y) {
+        if(this.hittingPiece != null) {
+            this.hittingPiece.chained = true;
+        }
+
+        this.resetPosition();
+        spendSlay(2);
+        changeTurn(true);
+    }
+
+    @Override
+    public boolean canMove4(int targetCol, int targetRow) {
+        if(reqSlay(3) && reqSin(1)) {
+            hittingPiece = getHittingPiece(targetCol, targetRow);
+
+            if (isWithinBoard(targetCol, targetRow)) {
+                if (hittingPiece != null && hittingPiece.color == this.color) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void move4(int x, int y) {
+        ArrayList<Piece> kill = new ArrayList<>();
+        GamePanel.pieces.remove(this.hittingPiece);
+        for(Piece piece : GamePanel.pieces) {
+            if(Math.abs(this.hittingPiece.preCol - piece.col) + Math.abs(this.hittingPiece.preRow - piece.row) == 1 || (this.preCol == piece.col && this.preRow == piece.row)) {
+                if(piece.immortal == 0){
+                    kill.add(piece);
+                }
+            }
+        }
+        for(Piece piece : kill) {
+            GamePanel.slay[this.color]++;
+            GamePanel.pieces.remove(piece);
+        }
+
+        this.resetPosition();
+        spendSlay(3);
+        changeTurn(false);
     }
 }

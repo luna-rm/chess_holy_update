@@ -18,7 +18,8 @@ public class Piece {
     public Piece hittingPiece;
     public int id;
     public boolean moved = false;
-    public boolean imortal = false;
+    public boolean chained = false;
+    public int immortal = 0;
     public boolean divineShield = false;
 
     public Piece(int color, int col, int row) {
@@ -72,6 +73,19 @@ public class Piece {
 
     public void draw(Graphics2D g2) {
         g2.drawImage(image, x, y, Board.SQUARE_SIZE, Board.SPRITE_SIZE, null);
+        if(this.chained){
+            g2.drawImage(getImage("../imgs/chains"), x, y, Board.SQUARE_SIZE, Board.SPRITE_SIZE, null);
+        }
+        if(this.immortal != 0){
+            if(this.id != 11){
+                g2.drawImage(getImage("../imgs/immortal"), x, y, Board.SQUARE_SIZE, Board.SPRITE_SIZE, null);
+            } else {
+                g2.drawImage(getImage("../imgs/immortal_devil"), x, y, Board.SQUARE_SIZE, Board.SPRITE_SIZE, null);
+            }
+        }
+        if(this.divineShield){
+            g2.drawImage(getImage("../imgs/divine_shield"), x, y, Board.SQUARE_SIZE, Board.SPRITE_SIZE, null);
+        }
     }
 
     public boolean canMove1(int targetCol, int targetRow) {
@@ -160,6 +174,9 @@ public class Piece {
         if(hittingPiece == null || hittingPiece.id == 7) {
             return true;
         } else {
+            if(hittingPiece.immortal != 0){
+                return false;
+            }
             if(hittingPiece.color != this.color) {
                 return true;
             } else {
@@ -274,6 +291,19 @@ public class Piece {
 
     public void changeTurn(boolean isFast){
         GamePanel.moveChosen = 0;
+        GamePanel.reqDivinity[0] = 0;
+        GamePanel.reqDivinity[1] = 0;
+        GamePanel.reqSlay[0] = 0;
+        GamePanel.reqSlay[1] = 0;
+        GamePanel.reqSin[0] = 0;
+        GamePanel.reqSin[1] = 0;
+        if(GamePanel.horseMove4Aux != 0){
+            GamePanel.horseMove4Aux--;
+            if(GamePanel.horseMove4Aux == 0){
+                GamePanel.activePiece = null;
+            }
+            return;
+        }
         GamePanel.activePiece = null;
         if(isFast){
             if(GamePanel.fast == 0){
@@ -281,6 +311,18 @@ public class Piece {
                 return;
             }
         }
+
+        for(Piece piece : GamePanel.pieces){
+            if(piece.color != GamePanel.currentColor){
+                if(piece.immortal != 0){
+                    piece.immortal--;
+                }
+                if(piece.chained){
+                    piece.chained = false;
+                }
+            }
+        }
+
         if(GamePanel.two_turns[this.color] == 1){
             GamePanel.fast = 0;
             GamePanel.two_turns[this.color] = 0;
@@ -303,10 +345,6 @@ public class Piece {
         }
         for(Burn burn : stop){
             GamePanel.burns.remove(burn);
-        }
-
-        if(GamePanel.horseMove4Aux != 0){
-            GamePanel.horseMove4Aux--;
         }
     }
 
@@ -332,6 +370,34 @@ public class Piece {
     public void unSelect(){
         GamePanel.moveChosen = 0;
         GamePanel.activePiece = null;
+    }
+
+    public boolean reqSlay(int hm){
+        GamePanel.reqSlay[this.color] = hm;
+        if(GamePanel.slay[this.color] >= hm){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean reqSin(int hm){
+        GamePanel.reqSin[this.color] = hm;
+        if(GamePanel.sin[this.color] >= hm){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean reqDiv(int hm){
+        GamePanel.reqDivinity[this.color] = hm;
+        if(GamePanel.divinity[this.color] >= hm){
+            return true;
+        }
+        return false;
+    }
+
+    public void spendSlay(int hm){
+        GamePanel.slay[this.color] -= hm;
     }
 
     public boolean canCast(int color, int sl, int si, int di){

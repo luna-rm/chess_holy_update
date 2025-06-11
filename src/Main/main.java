@@ -33,6 +33,12 @@ public class main extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     GamePanel.moveChosen = valorModo;
+                    GamePanel.reqDivinity[0] = 0;
+                    GamePanel.reqDivinity[1] = 0;
+                    GamePanel.reqSlay[0] = 0;
+                    GamePanel.reqSlay[1] = 0;
+                    GamePanel.reqSin[0] = 0;
+                    GamePanel.reqSin[1] = 0;
                 }
             });
         }

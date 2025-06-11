@@ -50,7 +50,7 @@ public class Pawn extends Piece{
         hittingPiece = getHittingPiece(targetCol, targetRow);
 
         if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
-            if(hittingPiece != null && Math.abs(targetCol - preCol) == 1 && targetRow == preRow + moveValue && hittingPiece.color != color) {
+            if(hittingPiece != null && Math.abs(targetCol - preCol) == 1 && targetRow == preRow + moveValue && hittingPiece.color != color && hittingPiece.immortal == 0) {
                 return true;
             }
         }
@@ -71,50 +71,50 @@ public class Pawn extends Piece{
 
     public void move3(int x, int y){
         unholyRitual();
-        if(this.hittingPiece != null) {
+        if(this.hittingPiece != null && this.hittingPiece.id == 0) {
             GamePanel.pieces.remove(this.hittingPiece.getIndex());
             GamePanel.slay[GamePanel.currentColor]++;
         }
         this.resetPosition();
         GamePanel.pieces.add(new Cultist(this.color, this.col, this.row));
-        GamePanel.pieces.remove(this.hittingPiece.getIndex());
+        GamePanel.pieces.remove(this);
 
         changeTurn(true);
     }
 
     @Override
     public boolean canMove4(int targetCol, int targetRow) {
-        int moveValue;
-        if(color == GamePanel.WHITE){
-            moveValue = -1;
-        } else {
-            moveValue = 1;
-        }
+        if(reqDiv(2)) {
+            int moveValue;
+            if (color == GamePanel.WHITE) {
+                moveValue = -1;
+            } else {
+                moveValue = 1;
+            }
 
-        hittingPiece = getHittingPiece(targetCol, targetRow);
+            hittingPiece = getHittingPiece(targetCol, targetRow);
 
-        if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
-            if(targetCol == preCol && targetRow == preRow+moveValue && hittingPiece == null){
-                return true;
+            if (isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
+                if (targetCol == preCol && targetRow == preRow + moveValue && hittingPiece == null) {
+                    return true;
+                }
             }
         }
         return false;
     }
 
     public void move4(int x, int y){
-        if(GamePanel.divinity[this.color] >= 3) {
-            holyPower();
-            this.col = (x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
-            this.row = (y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
-            if(this.hittingPiece != null) {
-                GamePanel.pieces.remove(this.hittingPiece.getIndex());
-                GamePanel.slay[GamePanel.currentColor]++;
-            }
-            this.updatePosition();
-            GamePanel.pieces.add(new Paladin(this.color, this.col, this.row));
+        holyPower();
+        this.col = (x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
+        this.row = (y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
+        if(this.hittingPiece != null) {
             GamePanel.pieces.remove(this.hittingPiece.getIndex());
-
-            changeTurn(false);
+            GamePanel.slay[GamePanel.currentColor]++;
         }
+        this.updatePosition();
+        GamePanel.pieces.add(new Paladin(this.color, this.col, this.row));
+        GamePanel.pieces.remove(this);
+
+        changeTurn(false);
     }
 }
