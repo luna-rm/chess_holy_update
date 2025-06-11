@@ -11,6 +11,8 @@ public class main extends JFrame {
 
     main(){
         this.setTitle("Chess - The Holy Update");
+        ImageIcon icon = new ImageIcon(getClass().getResource("./icon.png"));
+        this.setIconImage(icon.getImage());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
 

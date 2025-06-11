@@ -10,9 +10,9 @@ public class Cultist extends Piece{
         super(color, col, row);
         this.id = 8;
         if(color == GamePanel.WHITE){
-            image = getImage("../imgs/w_tower");
+            image = getImage("../imgs/w_cultist");
         } else {
-            image = getImage("../imgs/b_tower");
+            image = getImage("../imgs/b_cultist");
         }
     }
 

@@ -2,6 +2,7 @@ package Main.Piece;
 
 import Main.Board;
 import Main.GamePanel;
+import Main.Movement;
 
 public class Pawn extends Piece{
     public Pawn(int color, int col, int row) {
@@ -12,6 +13,11 @@ public class Pawn extends Piece{
         } else {
             image = getImage("../imgs/b_pawn");
         }
+
+        movement1 = new Movement("Pawn", 1, 0, 0, 0, 0, "Move 1 (or 2 if it is the first movement) to front, without destroying");
+        movement2 = new Movement("Pawn", 2, 0, 0, 0, 0, "Destroy a enemy piece in any front diagonal");
+        movement3 = new Movement("Pawn", 3, 1, 0, 0, 0, "Kill a pawn to transform me into a Cultist");
+        movement4 = new Movement("Pawn", 4, 0, 0, 0, 2, "Move 1 front and transform into a Paladin");
     }
 
     @Override

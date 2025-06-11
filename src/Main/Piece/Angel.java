@@ -7,9 +7,9 @@ public class Angel extends Piece {
         super(color, col, row);
         this.id = 10;
         if(color == GamePanel.WHITE){
-            image = getImage("../imgs/w_bis");
+            image = getImage("../imgs/w_angel");
         } else {
-            image = getImage("../imgs/b_bis");
+            image = getImage("../imgs/b_angel");
         }
     }
 

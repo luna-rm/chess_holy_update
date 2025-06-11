@@ -101,6 +101,7 @@ public class King extends Piece{
     @Override
     public void move3(int x, int y) {
         unholyRitual();
+        this.resetPosition();
         spendSlay(4);
         Collections.shuffle(GamePanel.pieces);
         ArrayList<Piece> kill = new ArrayList<Piece>();

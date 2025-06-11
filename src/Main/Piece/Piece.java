@@ -2,6 +2,7 @@ package Main.Piece;
 
 import Main.Board;
 import Main.GamePanel;
+import Main.Movement;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -21,6 +22,11 @@ public class Piece {
     public boolean chained = false;
     public int immortal = 0;
     public boolean divineShield = false;
+
+    public Movement movement1 = new Movement();
+    public Movement movement2 = new Movement();
+    public Movement movement3 = new Movement();
+    public Movement movement4 = new Movement();
 
     public Piece(int color, int col, int row) {
         this.color = color;
@@ -289,6 +295,28 @@ public class Piece {
         return false;
     }
 
+    public void verifyLeader(){
+        int[] haveLeader = new int[]{0, 0};
+        for(Piece piece : GamePanel.pieces){
+            if(piece.id == 5 || piece.id == 11){
+                haveLeader[piece.color]++;
+            }
+        }
+        if(this.color == GamePanel.WHITE){
+            if(haveLeader[GamePanel.BLACK] == 0){
+                GamePanel.gameover = GamePanel.WHITE;
+            } else if(haveLeader[GamePanel.WHITE] == 0){
+                GamePanel.gameover = GamePanel.BLACK;
+            }
+        } else {
+            if(haveLeader[GamePanel.WHITE] == 0){
+                GamePanel.gameover = GamePanel.BLACK;
+            } else if(haveLeader[GamePanel.BLACK] == 0){
+                GamePanel.gameover = GamePanel.WHITE;
+            }
+        }
+    }
+
     public void changeTurn(boolean isFast){
         GamePanel.moveChosen = 0;
         GamePanel.reqDivinity[0] = 0;
@@ -323,6 +351,8 @@ public class Piece {
             }
         }
 
+        verifyLeader();
+
         if(GamePanel.two_turns[this.color] == 1){
             GamePanel.fast = 0;
             GamePanel.two_turns[this.color] = 0;
@@ -341,6 +371,7 @@ public class Piece {
             if(burn.countdown == 2){
                 stop.add(burn);
                 burn.move1(0, 0);
+                verifyLeader();
             }
         }
         for(Burn burn : stop){
@@ -357,6 +388,15 @@ public class Piece {
     public void unholyRitual(){
         if(GamePanel.divinity[this.color] > 0){
             GamePanel.divinity[this.color]--;
+        }
+        ArrayList<Piece> angel = new ArrayList<>();
+        for(Piece piece : GamePanel.pieces){
+            if(piece.id == 10 && piece.color == this.color){
+                angel.add(piece);
+            }
+        }
+        for(Piece ang : angel){
+            GamePanel.pieces.remove(ang);
         }
     }
 

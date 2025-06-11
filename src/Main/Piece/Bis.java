@@ -67,6 +67,17 @@ public class Bis extends Piece {
     @Override
     public boolean canMove4(int targetCol, int targetRow) {
         if(reqDiv(10)){
+            int angels = 0;
+            for(Piece p : GamePanel.pieces){
+                if(p.id == 10 && p.color == this.color){
+                    angels++;
+                }
+            }
+
+            if(angels != 0){
+                return false;
+            }
+
             hittingPiece = getHittingPiece(targetCol, targetRow);
 
             if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {

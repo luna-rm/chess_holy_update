@@ -31,6 +31,7 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
     Board board = new Board();
     Mouse mouse = new Mouse();
+    Info info = new Info();
 
     public static ArrayList<Piece> pieces = new ArrayList<>();
     public static ArrayList<Piece> simPieces = new ArrayList<>();
@@ -40,6 +41,8 @@ public class GamePanel extends JPanel implements Runnable {
     public static final int WHITE = 0;
     public static final int BLACK = 1;
 
+    public static int gameover = -1;
+
     public static int currentColor = WHITE;
     int not_released = 1;
     public static int moveChosen = 0;
@@ -47,9 +50,9 @@ public class GamePanel extends JPanel implements Runnable {
     boolean canMove;
     boolean validSquare;
 
-    public static int[] slay = new int[]{6, 6};
+    public static int[] slay = new int[]{0, 0};
     public static int[] sin = new int[]{0, 0};
-    public static int[] divinity = new int[]{6, 4};
+    public static int[] divinity = new int[]{0, 0};
 
     public static int[] reqSlay = new int[]{0, 0};
     public static int[] reqSin = new int[]{0, 0};
@@ -59,6 +62,7 @@ public class GamePanel extends JPanel implements Runnable {
     public static int[] two_turns = new int[]{0, 0};
     public static int fast = 0;
 
+    public static Movement activeMovement = new Movement();
     private void update(){
         if(mouse.pressed && not_released == 1){
             not_released = 0;
@@ -133,29 +137,50 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void simulate() {
-        //if((mouse.x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE) <= 7 && (mouse.x / 3) / (Board.SQUARE_SIZE) >= 0 && (mouse.y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE) >= 0 && (mouse.y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE) <= 8){
-            activePiece.x = (mouse.x/3) / (Board.SQUARE_SIZE) * (Board.SQUARE_SIZE);
-            activePiece.y = (mouse.y/3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE) * (Board.SQUARE_SIZE);
-            activePiece.col = (mouse.x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
-            activePiece.row = (mouse.y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
+        activePiece.x = (mouse.x/3) / (Board.SQUARE_SIZE) * (Board.SQUARE_SIZE);
+        activePiece.y = (mouse.y/3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE) * (Board.SQUARE_SIZE);
+        activePiece.col = (mouse.x / 3 - Board.SQUARE_SIZE) / (Board.SQUARE_SIZE);
+        activePiece.row = (mouse.y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
 
-            if(moveChosen == 1 && activePiece.canMove1(activePiece.col, activePiece.row)){
-                canMove = true;
-                validSquare = true;
-            } else if (moveChosen == 2 && activePiece.canMove2(activePiece.col, activePiece.row)){
-                canMove = true;
-                validSquare = true;
-            } else if (moveChosen == 3 && activePiece.canMove3(activePiece.col, activePiece.row)){
-                canMove = true;
-                validSquare = true;
-            } else if (moveChosen == 4 && activePiece.canMove4(activePiece.col, activePiece.row)){
-                canMove = true;
-                validSquare = true;
-            } else {
-                canMove = false;
-                validSquare = false;
-            }
-        //}
+        if(moveChosen == 1){
+            activeMovement = activePiece.movement1;
+            info.reload();
+        }
+
+        if(moveChosen == 2){
+            activeMovement = activePiece.movement2;
+            info.reload();
+        }
+
+        if(moveChosen == 3){
+            activeMovement = activePiece.movement3;
+            info.reload();
+        }
+
+        if(moveChosen == 4){
+            activeMovement = activePiece.movement4;
+            info.reload();
+        }
+
+        if(moveChosen == 1 && activePiece.canMove1(activePiece.col, activePiece.row)){
+            activeMovement = activePiece.movement1;
+            canMove = true;
+            validSquare = true;
+        } else if (moveChosen == 2 && activePiece.canMove2(activePiece.col, activePiece.row)){
+            canMove = true;
+            validSquare = true;
+        } else if (moveChosen == 3 && activePiece.canMove3(activePiece.col, activePiece.row)){
+            activeMovement = activePiece.movement3;
+            canMove = true;
+            validSquare = true;
+        } else if (moveChosen == 4 && activePiece.canMove4(activePiece.col, activePiece.row)){
+            activeMovement = activePiece.movement4;
+            canMove = true;
+            validSquare = true;
+        } else {
+            canMove = false;
+            validSquare = false;
+        }
 
     }
 
@@ -258,6 +283,11 @@ public class GamePanel extends JPanel implements Runnable {
                 update();
                 repaint();
                 delta--;
+            }
+
+            if(gameover != -1){
+               new End();
+               break;
             }
         }
 
