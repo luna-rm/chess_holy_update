@@ -31,7 +31,6 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
     Board board = new Board();
     Mouse mouse = new Mouse();
-    Info info = new Info();
 
     public static ArrayList<Piece> pieces = new ArrayList<>();
     public static ArrayList<Piece> simPieces = new ArrayList<>();
@@ -60,6 +59,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     public static int horseMove4Aux = 0;
     public static int[] two_turns = new int[]{0, 0};
+    public static int[] queenMove2Aux = new int[]{0, 0};
+
     public static int fast = 0;
 
     public static Movement activeMovement = new Movement();
@@ -121,10 +122,6 @@ public class GamePanel extends JPanel implements Runnable {
                 activePiece.resetPosition();
             }
             activePiece = null;
-
-            System.out.println(slay[0] + " " + slay[1]);
-            System.out.println(sin[0] + " " + sin[1]);
-            System.out.println(divinity[0] + " " + divinity[1]);
         }
 
         if(!mouse.pressed && not_released == 0) {
@@ -143,38 +140,43 @@ public class GamePanel extends JPanel implements Runnable {
         activePiece.row = (mouse.y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
 
         if(moveChosen == 1){
-            activeMovement = activePiece.movement1;
-            info.reload();
+            if(activeMovement != activePiece.movement1){
+                activeMovement = activePiece.movement1;
+                main.info.reload();
+            }
         }
 
         if(moveChosen == 2){
-            activeMovement = activePiece.movement2;
-            info.reload();
+            if(activeMovement != activePiece.movement2){
+                activeMovement = activePiece.movement2;
+                main.info.reload();
+            }
         }
 
         if(moveChosen == 3){
-            activeMovement = activePiece.movement3;
-            info.reload();
+            if(activeMovement != activePiece.movement3){
+                activeMovement = activePiece.movement3;
+                main.info.reload();
+            }
         }
 
         if(moveChosen == 4){
-            activeMovement = activePiece.movement4;
-            info.reload();
+            if(activeMovement != activePiece.movement4){
+                activeMovement = activePiece.movement4;
+                main.info.reload();
+            }
         }
 
         if(moveChosen == 1 && activePiece.canMove1(activePiece.col, activePiece.row)){
-            activeMovement = activePiece.movement1;
             canMove = true;
             validSquare = true;
         } else if (moveChosen == 2 && activePiece.canMove2(activePiece.col, activePiece.row)){
             canMove = true;
             validSquare = true;
         } else if (moveChosen == 3 && activePiece.canMove3(activePiece.col, activePiece.row)){
-            activeMovement = activePiece.movement3;
             canMove = true;
             validSquare = true;
         } else if (moveChosen == 4 && activePiece.canMove4(activePiece.col, activePiece.row)){
-            activeMovement = activePiece.movement4;
             canMove = true;
             validSquare = true;
         } else {
@@ -187,6 +189,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void lunchGame() {
         gameThread = new Thread(this);
         gameThread.start();
+        main.info.setVisible(true);
     }
 
     public void setPieces(){
@@ -251,7 +254,9 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         for(Piece p : pieces){
-            p.draw(g2);
+            try{
+                p.draw(g2);
+            } catch(Exception ignored){}
         }
     }
 

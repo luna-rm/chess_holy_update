@@ -1,6 +1,7 @@
 package Main.Piece;
 
 import Main.GamePanel;
+import Main.Movement;
 
 public class Horse extends Piece {
     public Horse(int color, int col, int row) {
@@ -12,6 +13,11 @@ public class Horse extends Piece {
         } else {
             image = getImage("../imgs/b_horse");
         }
+
+        movement1 = new Movement("Horse", 1, 0, 0, 0, 0, 0, "Jump in L");
+        movement2 = new Movement("Horse", 2, 0, 1, 0, 0, 0, "Destroy piece in back 1 without moving");
+        movement3 = new Movement("Horse", 3, 1, 1, 4, 0, 0, "Transform a piece in a horse");
+        movement4 = new Movement("Horse", 4, 1, 1, 6, 1, 0, "Play with a enemy piece, pass divine shield");
     }
 
     @Override
@@ -50,11 +56,11 @@ public class Horse extends Piece {
     public void move2(int x, int y){
         if(this.hittingPiece != null) {
             GamePanel.pieces.remove(this.hittingPiece.getIndex());
-            GamePanel.slay[GamePanel.currentColor]++;
+            gainSlay(1);
         }
         this.resetPosition();
 
-        changeTurn(false);
+        changeTurn(true);
     }
 
     @Override
@@ -63,7 +69,7 @@ public class Horse extends Piece {
             hittingPiece = getHittingPiece(targetCol, targetRow);
 
             if (isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
-                if (hittingPiece != null && hittingPiece.divineShield == false) {
+                if (hittingPiece != null && !hittingPiece.divineShield) {
                     return true;
                 }
             }
@@ -74,6 +80,8 @@ public class Horse extends Piece {
     public void move3(int x, int y){
         spendSlay(4);
         Horse horse = new Horse(this.hittingPiece.color, this.hittingPiece.col, this.hittingPiece.row);
+        horse.initCol = this.hittingPiece.initCol;
+        horse.initRow = this.hittingPiece.initRow;
         horse.immortal = hittingPiece.immortal;
         GamePanel.pieces.add(horse);
         GamePanel.pieces.remove(this.hittingPiece.getIndex());
@@ -85,7 +93,7 @@ public class Horse extends Piece {
 
     @Override
     public boolean canMove4(int targetCol, int targetRow) {
-        if(reqSlay(6) && reqSin(1)) {
+        if(reqSlay(6) && reqSin(1) || reqSin(1) && reqSlay(6)) {
             hittingPiece = getHittingPiece(targetCol, targetRow);
 
             if (isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {

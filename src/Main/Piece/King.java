@@ -2,6 +2,7 @@ package Main.Piece;
 
 import Main.Board;
 import Main.GamePanel;
+import Main.Movement;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +17,11 @@ public class King extends Piece{
         } else {
             image = getImage("../imgs/b_king");
         }
+
+        movement1 = new Movement("King", 1, 0, 0, 0, 0, 0, "Move 1 to any direction");
+        movement2 = new Movement("King", 2, 0, 1, 0, 0, 0, "Transform an allied Pawn in the enemy side to a random base non-King piece");
+        movement3 = new Movement("King", 3, 1, 0, 3, 2, 0, "Sacrifice 3 Cultists to transform me into the Devil");
+        movement4 = new Movement("King", 4, 2, 1, 2, 0, 0, "Place an Pawn on your side of the field");
     }
 
     public boolean canMove1(int targetCol, int targetRow) {
@@ -76,7 +82,7 @@ public class King extends Piece{
     }
 
     public boolean canMove3(int targetCol, int targetRow) {
-        if(reqSlay(4) && reqSin(2)) {
+        if(reqSlay(3) && reqSin(2) || reqSin(2) && reqSlay(4)) {
             hittingPiece = getHittingPiece(targetCol, targetRow);
 
             if (isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
@@ -102,7 +108,7 @@ public class King extends Piece{
     public void move3(int x, int y) {
         unholyRitual();
         this.resetPosition();
-        spendSlay(4);
+        spendSlay(3);
         Collections.shuffle(GamePanel.pieces);
         ArrayList<Piece> kill = new ArrayList<Piece>();
         for(Piece piece : GamePanel.pieces) {
@@ -115,15 +121,17 @@ public class King extends Piece{
         }
         for(Piece piece : kill){
             GamePanel.pieces.remove(piece);
-            GamePanel.slay[this.color]++;
+            gainSlay(1);
         }
 
         GamePanel.pieces.remove(this);
-        GamePanel.pieces.add(new Devil(this.color, this.col, this.row));
+        Devil d = new Devil(this.color, this.col, this.row);
+        d.initCol = this.initCol;
+        d.initRow = this.initRow;
+        GamePanel.pieces.add(d);
 
         this.resetPosition();
         changeTurn(false);
-
     }
 
     public boolean canMove4(int targetCol, int targetRow) {

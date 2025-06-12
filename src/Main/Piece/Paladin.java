@@ -2,6 +2,7 @@ package Main.Piece;
 
 import Main.Board;
 import Main.GamePanel;
+import Main.Movement;
 
 import java.util.ArrayList;
 
@@ -15,6 +16,11 @@ public class Paladin extends Piece {
         } else {
             image = getImage("../imgs/b_paladin");
         }
+
+        movement1 = new Movement("Paladin", 1, 0, 0, 0, 0, 0, "Move 1 to any direction");
+        movement2 = new Movement("Paladin", 2, 0, 0, 0, 0, 0, "I and another Paladin move 1 front");
+        movement3 = new Movement("Paladin", 3, 2, 0, 0, 0, 0, "Give your paladins Immortal 1, if Divinity 7: Fast");
+        movement4 = new Movement("Paladin", 4, 2, 1, 0, 0, 10, "Change Place with the Angel");
     }
 
     @Override
@@ -85,7 +91,7 @@ public class Paladin extends Piece {
 
             if(enemyPiece != null){
                 GamePanel.pieces.remove(enemyPiece);
-                GamePanel.slay[GamePanel.currentColor]++;
+                gainSlay(1);
             }
         }
 
@@ -95,7 +101,7 @@ public class Paladin extends Piece {
             this.hittingPiece.updatePosition();
             if(enemyPieceHitting != null){
                 GamePanel.pieces.remove(enemyPieceHitting);
-                GamePanel.slay[GamePanel.currentColor]++;
+                gainSlay(1);
             }
         }
 

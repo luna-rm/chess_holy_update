@@ -1,6 +1,7 @@
 package Main.Piece;
 
 import Main.GamePanel;
+import Main.Movement;
 
 public class Queen extends Piece {
     public Queen(int color, int col, int row) {
@@ -12,6 +13,11 @@ public class Queen extends Piece {
         } else {
             image = getImage("../imgs/b_queen");
         }
+
+        movement1 = new Movement("Queen", 1, 0, 0, 0, 0, 0, "Move X to any direction");
+        movement2 = new Movement("Queen", 2, 0, 1, 0, 0, 0, "Next turn, you gain double slay");
+        movement3 = new Movement("Queen", 3, 1, 0, 5, 2, 0, "Sacrifice me to have another turn");
+        movement4 = new Movement("Queen", 4, 2, 0, 0, 0, 9, "Lose all Divinity, back all pieces to it’s started position");
     }
 
     @Override
@@ -33,19 +39,22 @@ public class Queen extends Piece {
 
     @Override
     public boolean canMove2(int targetCol, int targetRow) {
-        if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
-            if(Math.abs(targetCol-preCol) * Math.abs(targetRow-preRow) == 2){
-                if(isValidSquare(targetCol, targetRow)) {
-                    return true;
-                }
-            }
+        if(isWithinBoard(targetCol, targetRow) && isSameSquare(targetCol, targetRow)) {
+            return true;
         }
         return false;
     }
 
     @Override
+    public void move2(int x, int y) {
+        this.resetPosition();
+        GamePanel.queenMove2Aux[this.color] = 2;
+        changeTurn(true);
+    }
+
+    @Override
     public boolean canMove3(int targetCol, int targetRow) {
-        if(reqSlay(1) && reqSin(2)) {
+        if(reqSlay(1) && reqSin(2) || reqSin(2) && reqSlay(1)) {
             if (isWithinBoard(targetCol, targetRow) && isSameSquare(targetCol, targetRow)) {
                 return true;
             }
@@ -54,35 +63,12 @@ public class Queen extends Piece {
     }
 
     public void move3(int x, int y){
-        Piece king = null;
-        for (Piece piece : GamePanel.pieces) {
-            if (piece.id == 5 && piece.color == this.color) {
-                king = piece;
-            }
-        }
-
-        if (king == null) {
-            unSelect();
-            return;
-        }
-
-        boolean isAble = false;
-        for (Piece piece : GamePanel.pieces) {
-            if (Math.abs(king.preCol - piece.col) + Math.abs(king.preRow - piece.row) == 1 || Math.abs(king.preCol - piece.col) * Math.abs(king.preRow - piece.row) == 1) {
-                isAble = true;
-            }
-
-        }
-
-        if (isAble) {
-            spendSlay(1);
-            unholyRitual();
-            GamePanel.slay[this.color] += 1;
-            GamePanel.pieces.remove(this);
-            GamePanel.two_turns[this.color] = 1;
-            changeTurn(true);
-
-        }
+        spendSlay(1);
+        unholyRitual();
+        gainSlay(1);
+        GamePanel.pieces.remove(this);
+        GamePanel.two_turns[this.color] = 1;
+        changeTurn(true);
     }
 
     @Override

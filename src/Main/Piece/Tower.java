@@ -2,6 +2,7 @@ package Main.Piece;
 
 import Main.Board;
 import Main.GamePanel;
+import Main.Movement;
 
 public class Tower extends Piece {
     public Tower(int color, int col, int row) {
@@ -13,6 +14,11 @@ public class Tower extends Piece {
         } else {
             image = getImage("../imgs/b_tower");
         }
+
+        movement1 = new Movement("Tower", 1, 0, 0, 0, 0, 0, "Move X in any line");
+        movement2 = new Movement("Tower", 2, 0, 0, 0, 0, 0, "If me and the king are aligned, I go to his position and he move 1 in my direction ");
+        movement3 = new Movement("Tower", 3, 1, 0, 0, 1, 0, "Put a trap in a tile in a range 2, after the enemy turn it explodes in a line");
+        movement4 = new Movement("Tower", 4, 2, 1, 0, 0, 0, "Create a Wall in my position and move 1 back");
     }
 
     @Override
@@ -73,12 +79,14 @@ public class Tower extends Piece {
 
     @Override
     public boolean canMove3(int targetCol, int targetRow) {
-        if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
-            if(Math.abs(targetCol - preCol) + Math.abs(targetRow - preRow) == 2) {
-                return true;
-            }
-            if(Math.abs(targetCol - preCol) * Math.abs(targetRow - preRow) == 2) {
-                return true;
+        if(reqSin(1)){
+            if(isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
+                if(Math.abs(targetCol - preCol) + Math.abs(targetRow - preRow) == 2) {
+                    return true;
+                }
+                if(Math.abs(targetCol - preCol) * Math.abs(targetRow - preRow) == 2) {
+                    return true;
+                }
             }
         }
         return false;

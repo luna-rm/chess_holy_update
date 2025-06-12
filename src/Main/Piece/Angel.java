@@ -1,6 +1,7 @@
 package Main.Piece;
 
 import Main.GamePanel;
+import Main.Movement;
 
 public class Angel extends Piece {
     public Angel(int color, int col, int row)  {
@@ -11,6 +12,11 @@ public class Angel extends Piece {
         } else {
             image = getImage("../imgs/b_angel");
         }
+
+        movement1 = new Movement("Angel", 1, 2, 1, 0, 0, 0, "Give allied pieces in line Immortal 1");
+        movement2 = new Movement("Angel", 2, 0, 0, 0, 0, 0, "Move to any place on the board without killing");
+        movement3 = new Movement(true);
+        movement4 = new Movement(true);
     }
 
     @Override

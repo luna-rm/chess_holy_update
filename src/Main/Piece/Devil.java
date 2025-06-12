@@ -2,6 +2,7 @@ package Main.Piece;
 
 import Main.Board;
 import Main.GamePanel;
+import Main.Movement;
 
 import java.util.Collections;
 
@@ -16,6 +17,11 @@ public class Devil extends Piece {
         } else {
             image = getImage("../imgs/b_devil");
         }
+
+        movement1 = new Movement("Devil", 1, 1, 0, 3, 0, 0, "Move 3 to any direction, if I kill I gain Immortal 1; if you can't pay the price random allied pieces will");
+        movement2 = new Movement("Devil", 2, 0, 0, 0, 0, 0, "Kill me");
+        movement3 = new Movement(true);
+        movement4 = new Movement(true);
     }
 
     @Override
@@ -65,7 +71,7 @@ public class Devil extends Piece {
         if(this.hittingPiece != null) {
             this.immortal++;
             GamePanel.pieces.remove(this.hittingPiece.getIndex());
-            GamePanel.slay[GamePanel.currentColor]++;
+            gainSlay(1);
         }
         int need_sacrifice = 3;
         for(int i = 0; i < need_sacrifice; i++){

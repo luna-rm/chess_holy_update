@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class main extends JFrame {
+    public static Info info = new Info();
 
     main(){
         this.setTitle("Chess - The Holy Update");

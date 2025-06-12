@@ -115,7 +115,7 @@ public class Piece {
         this.row = (y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
         if(this.hittingPiece != null) {
             GamePanel.pieces.remove(this.hittingPiece.getIndex());
-            GamePanel.slay[GamePanel.currentColor]++;
+            gainSlay(1);
         }
         this.updatePosition();
 
@@ -127,7 +127,7 @@ public class Piece {
         this.row = (y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
         if(this.hittingPiece != null) {
             GamePanel.pieces.remove(this.hittingPiece.getIndex());
-            GamePanel.slay[GamePanel.currentColor]++;
+            gainSlay(1);
         }
         this.updatePosition();
 
@@ -139,7 +139,7 @@ public class Piece {
         this.row = (y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
         if(this.hittingPiece != null) {
             GamePanel.pieces.remove(this.hittingPiece.getIndex());
-            GamePanel.slay[GamePanel.currentColor]++;
+            gainSlay(1);
         }
         this.updatePosition();
 
@@ -151,7 +151,7 @@ public class Piece {
         this.row = (y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
         if(this.hittingPiece != null) {
             GamePanel.pieces.remove(this.hittingPiece.getIndex());
-            GamePanel.slay[GamePanel.currentColor]++;
+            gainSlay(1);
         }
         this.updatePosition();
 
@@ -360,8 +360,14 @@ public class Piece {
         }
         if (GamePanel.currentColor == GamePanel.WHITE) {
             GamePanel.currentColor = GamePanel.BLACK;
+            if(GamePanel.queenMove2Aux[GamePanel.BLACK] > 0){
+                GamePanel.queenMove2Aux[GamePanel.BLACK]--;
+            }
         } else {
             GamePanel.currentColor = GamePanel.WHITE;
+            if(GamePanel.queenMove2Aux[GamePanel.WHITE] > 0){
+                GamePanel.queenMove2Aux[GamePanel.WHITE]--;
+            }
         }
         GamePanel.fast = 0;
 
@@ -398,6 +404,8 @@ public class Piece {
         for(Piece ang : angel){
             GamePanel.pieces.remove(ang);
         }
+        System.out.println(GamePanel.queenMove2Aux[GamePanel.WHITE]);
+        System.out.println(GamePanel.queenMove2Aux[GamePanel.BLACK]);
     }
 
     public void resetPosition() {
@@ -438,6 +446,13 @@ public class Piece {
 
     public void spendSlay(int hm){
         GamePanel.slay[this.color] -= hm;
+    }
+
+    public void gainSlay(int hm){
+        if(GamePanel.queenMove2Aux[this.color] == 1){
+            GamePanel.slay[this.color] += hm;
+        }
+        GamePanel.slay[this.color] += hm;
     }
 
     public boolean canCast(int color, int sl, int si, int di){

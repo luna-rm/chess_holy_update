@@ -14,10 +14,10 @@ public class Pawn extends Piece{
             image = getImage("../imgs/b_pawn");
         }
 
-        movement1 = new Movement("Pawn", 1, 0, 0, 0, 0, "Move 1 (or 2 if it is the first movement) to front, without destroying");
-        movement2 = new Movement("Pawn", 2, 0, 0, 0, 0, "Destroy a enemy piece in any front diagonal");
-        movement3 = new Movement("Pawn", 3, 1, 0, 0, 0, "Kill a pawn to transform me into a Cultist");
-        movement4 = new Movement("Pawn", 4, 0, 0, 0, 2, "Move 1 front and transform into a Paladin");
+        movement1 = new Movement("Pawn", 1, 0, 0, 0, 0, 0, "Move 1 (or 2 if it is the first movement) to front, without destroying");
+        movement2 = new Movement("Pawn", 2, 0, 0, 0, 0, 0, "Destroy a enemy piece in any front diagonal");
+        movement3 = new Movement("Pawn", 3, 1, 1, 0, 0, 0, "Kill a pawn to transform me into a Cultist");
+        movement4 = new Movement("Pawn", 4, 2, 0, 0, 0, 2, "Move 1 front and transform into a Paladin");
     }
 
     @Override
@@ -79,10 +79,13 @@ public class Pawn extends Piece{
         unholyRitual();
         if(this.hittingPiece != null && this.hittingPiece.id == 0) {
             GamePanel.pieces.remove(this.hittingPiece.getIndex());
-            GamePanel.slay[GamePanel.currentColor]++;
+            gainSlay(1);
         }
         this.resetPosition();
-        GamePanel.pieces.add(new Cultist(this.color, this.col, this.row));
+        Cultist c = new Cultist(this.color, this.col, this.row);
+        c.initCol = this.initCol;
+        c.initRow = this.initRow;
+        GamePanel.pieces.add(c);
         GamePanel.pieces.remove(this);
 
         changeTurn(true);
@@ -115,10 +118,13 @@ public class Pawn extends Piece{
         this.row = (y / 3 - Board.SQUARE_SIZE * 2) / (Board.SQUARE_SIZE);
         if(this.hittingPiece != null) {
             GamePanel.pieces.remove(this.hittingPiece.getIndex());
-            GamePanel.slay[GamePanel.currentColor]++;
+            gainSlay(1);
         }
         this.updatePosition();
-        GamePanel.pieces.add(new Paladin(this.color, this.col, this.row));
+        Paladin p = new Paladin(this.color, this.col, this.row);
+        p.initCol = this.initCol;
+        p.initRow = this.initRow;
+        GamePanel.pieces.add(p);
         GamePanel.pieces.remove(this);
 
         changeTurn(false);
