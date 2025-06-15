@@ -22,7 +22,8 @@ public class Info extends JFrame {
         setSize(400, 250);
         ImageIcon icon = new ImageIcon(getClass().getResource("./icon.png"));
         this.setIconImage(icon.getImage());
-        setLocationRelativeTo(null);
+        // setLocationRelativeTo(null);
+        setLocation(920, 30);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
 

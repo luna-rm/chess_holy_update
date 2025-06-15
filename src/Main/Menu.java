@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.InputStream;
+import java.net.URI;
 
 public class Menu extends JFrame{
     private Font pixelFont = null;
@@ -16,16 +17,18 @@ public class Menu extends JFrame{
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
+        ImageIcon icon = new ImageIcon(getClass().getResource("./icon.png"));
+        setIconImage(icon.getImage());
 
-    // Carregando fonte personalizada
-    try {
-        InputStream is = getClass().getResourceAsStream("pixel_font.ttf");
-    if (is != null) {
-        pixelFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(16f);
-    }
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
+        // Carregando fonte personalizada
+        try {
+            InputStream is = getClass().getResourceAsStream("pixel_font.ttf");
+        if (is != null) {
+            pixelFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(16f);
+        }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Cor de fundo
         Color background = new Color(52, 49, 69);
@@ -54,7 +57,11 @@ public class Menu extends JFrame{
 
         // Ação ao apertar botão "Regras"
         regrasBtn.addActionListener((ActionEvent e) -> {
-            JOptionPane.showMessageDialog(this, "Regras do jogo ainda não implementadas.", "Regras", JOptionPane.INFORMATION_MESSAGE);
+            try{
+                Desktop.getDesktop().browse(new URI("https://www.notion.so/Base-Rules-20afe607f444803ca4beccce79812e31?source=copy_link"));
+            }catch(Exception error){
+                error.printStackTrace();
+            }
         });
 
         // Ação ao apertar botão "Sair"
