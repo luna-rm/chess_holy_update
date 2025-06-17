@@ -94,7 +94,7 @@ public class Bis extends Piece {
         GamePanel.pieces.remove(this.hittingPiece.getIndex());
 
         this.resetPosition();
-        changeTurn(false);
+        changeTurn(true);
     }
 
     @Override

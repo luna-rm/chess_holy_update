@@ -16,7 +16,7 @@ public class Horse extends Piece {
 
         movement1 = new Movement("Horse", 1, 0, 0, 0, 0, 0, "Jump in L");
         movement2 = new Movement("Horse", 2, 0, 1, 0, 0, 0, "Destroy piece in back 1 without moving");
-        movement3 = new Movement("Horse", 3, 1, 1, 4, 0, 0, "Transform a piece in a horse");
+        movement3 = new Movement("Horse", 3, 1, 0, 4, 0, 0, "Transform a piece in a horse");
         movement4 = new Movement("Horse", 4, 1, 1, 6, 1, 0, "Play with a enemy piece, pass divine shield");
     }
 

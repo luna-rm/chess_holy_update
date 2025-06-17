@@ -45,9 +45,9 @@ public class Menu extends JFrame{
         getContentPane().add(Box.createVerticalStrut(30));
 
         // Botões
-        JButton jogarBtn = createButton("Jogar");
-        JButton regrasBtn = createButton("Regras");
-        JButton sairBtn = createButton("Sair");
+        JButton jogarBtn = createButton("Play");
+        JButton regrasBtn = createButton("Rules");
+        JButton sairBtn = createButton("Exit");
 
         // Ação ao apertar botão "Jogar"
         jogarBtn.addActionListener((ActionEvent e) -> {
@@ -58,7 +58,7 @@ public class Menu extends JFrame{
         // Ação ao apertar botão "Regras"
         regrasBtn.addActionListener((ActionEvent e) -> {
             try{
-                Desktop.getDesktop().browse(new URI("https://www.notion.so/Base-Rules-20afe607f444803ca4beccce79812e31?source=copy_link"));
+                Desktop.getDesktop().browse(new URI("https://grape-smile-56a.notion.site/Base-Rules-20afe607f444803ca4beccce79812e31"));
             }catch(Exception error){
                 error.printStackTrace();
             }
